@@ -1,0 +1,23 @@
+{
+  "name": "gvr-datingapp",
+  "version": "1.0.0",
+  "description": "GVR dating app MERN Stack",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "concurrently \"npm --prefix ./backend start\" \"npm --prefix ./frontend start\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RJRYT/GVR-DatingApp.git"
+  },
+  "author": "RJRYT",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/RJRYT/GVR-DatingApp/issues"
+  },
+  "homepage": "https://github.com/RJRYT/GVR-DatingApp#readme",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
