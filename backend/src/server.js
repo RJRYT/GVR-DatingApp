@@ -46,6 +46,7 @@ app.get("/", (req, res) => {
 require("./app/config/passport.config")(passport);
 
 require("./app/routes/auth.routes")(app);
+require("./app/routes/users.routes")(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;

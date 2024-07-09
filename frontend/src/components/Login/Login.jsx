@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../Instance/Axios";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { user, addToken } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (user) {
+        navigate("/home");
+        return;
+      }
+    };
+    fetchUser();
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,10 +27,11 @@ const Login = () => {
         email,
         password,
       });
-      localStorage.setItem("token", res.data.token);
+      addToken(res.data.token);
       navigate("/home");
     } catch (err) {
       console.error(err);
+      alert(err.message);
     }
   };
 

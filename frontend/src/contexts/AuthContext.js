@@ -5,35 +5,44 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
 
   useEffect(() => {
     const fetchUser = async()=> {
-        const token = localStorage.getItem("token");
-        if (token) {
-          setUser({ token });
+        if (token && token !== 'undefined') {
           try {
             const res = await axiosInstance.get("/users/me");
+            console.log(res);
             setUser(res.data);
           } catch (err) {
-            console.error(err);
+            setUser(null);
+            localStorage.removeItem("token");
+            setToken(null);
           }
         }
     }
     fetchUser();
-  }, []);
+  }, [token]);
 
   const login = (userData) => {
     setUser(userData);
-    localStorage.setItem('token', userData.token);
   };
+
+  const addToken = (authToken) => {
+    setToken(authToken);
+    localStorage.setItem("token", authToken);
+  };
+
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('token');
+    setToken(null);
+    localStorage.removeItem("token");
+    console.log("user logout completed");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, token, addToken, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../Instance/Axios";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const LoginPhone = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
   const navigate = useNavigate();
+  const { user, addToken } = useContext(AuthContext);
 
   const handleSendOtp = async (e) => {
     e.preventDefault();
@@ -16,8 +18,19 @@ const LoginPhone = () => {
       setIsOtpSent(true);
     } catch (err) {
       console.error(err);
+      alert(err.response.data.message);
     }
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (user) {
+        navigate("/home");
+        return;
+      }
+    };
+    fetchUser();
+  }, [navigate]);
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
@@ -26,10 +39,11 @@ const LoginPhone = () => {
         phoneNumber,
         otp,
       });
-      localStorage.setItem("token", res.data.token);
+      addToken(res.data.token);
       navigate("/home");
     } catch (err) {
       console.error(err);
+      alert(err.response.data.message);
     }
   };
 

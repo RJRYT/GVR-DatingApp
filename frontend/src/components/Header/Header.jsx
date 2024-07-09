@@ -24,8 +24,10 @@ function Header() {
             ) : (
               <>
                 <LinkContainer to="/profile">Profile</LinkContainer>
-                <LinkContainer to="#logout" onClick={logout}>
-                  Logout
+                <LinkContainer to="#logout">
+                  <Nav.Item onClick={logout}>
+                    Logout
+                  </Nav.Item>
                 </LinkContainer>
               </>
             )}

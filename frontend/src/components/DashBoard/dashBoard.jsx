@@ -1,23 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useContext } from "react";
 import axiosInstance from "../../Instance/Axios";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const DashBoard = () => {
-  const [user, setUser] = useState(null);
+  const { user, login, addToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    console.log("Token: ", token);
+    if (token) {
+      addToken(token);
+    }
+  }, []);
+
+  useEffect(() => {
     const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
+      console.log("User: ", user);
+      if (!user) {
         navigate("/login");
         return;
       }
 
       try {
         const res = await axiosInstance.get("/users/me");
-        setUser(res.data);
+        login(res.data);
       } catch (err) {
         console.error(err);
         navigate("/login");

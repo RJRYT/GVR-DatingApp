@@ -1,9 +1,9 @@
 module.exports = app => {
-    const usersController = require("../controllers/users.controller.js");
+    const usersController = require("../controllers/users.controllers");
   
     var router = require("express").Router();
   
-    router.post("/", usersController.test);
+    router.get("/", usersController.test);
     router.get(
       "/me",
       usersController.authMiddleware,

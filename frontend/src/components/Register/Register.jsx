@@ -1,22 +1,39 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../Instance/Axios";
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const Register = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const { user, addToken } = useContext(AuthContext);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (user) {
+        navigate("/home");
+        return;
+      }
+    };
+    fetchUser();
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axiosInstance.post('/auth/email/register', { username, email, password });
-      localStorage.setItem('token', res.data.token);
-      navigate('/home');
+      const res = await axiosInstance.post("/auth/email/register", {
+        username,
+        email,
+        password,
+      });
+      addToken(res.data.token);
+      navigate("/home");
     } catch (err) {
       console.error(err);
+      alert(err.message);
     }
   };
 
@@ -26,7 +43,7 @@ const Register = () => {
   };
 
   const handlePhoneRegister = () => {
-    navigate('/login/phone');
+    navigate("/login/phone");
   };
 
   return (
@@ -69,11 +86,19 @@ const Register = () => {
               Register
             </Button>
           </Form>
-          <Button variant="danger" onClick={handleGoogleRegister} className="m-3">
+          <Button
+            variant="danger"
+            onClick={handleGoogleRegister}
+            className="m-3"
+          >
             Register with Google
           </Button>
 
-          <Button variant="secondary" onClick={handlePhoneRegister} className="m-3">
+          <Button
+            variant="secondary"
+            onClick={handlePhoneRegister}
+            className="m-3"
+          >
             Register with Phone Number
           </Button>
         </Col>
