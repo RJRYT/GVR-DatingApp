@@ -7,8 +7,6 @@ module.exports = (mongoose) => {
       password: { type: String },
       googleId: { type: String, unique: true, sparse: true },
       phoneNumber: { type: String, unique: true, sparse: true },
-      otp: { type: String },
-      verified: { type: Boolean, default: false },
       date: { type: Date, default: Date.now },
     },
     { timestamps: true }

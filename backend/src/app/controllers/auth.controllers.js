@@ -69,26 +69,22 @@ exports.GoogleCallBack = (req, res) => {
 exports.SendCode = async(req, res) => {
   const { phoneNumber } = req.body;
 
-  const otp = Math.floor(100000 + Math.random() * 900000).toString();
   let user = await User.findOne({ phoneNumber });
 
-  if (user) {
-    user.otp = otp;
-    user.verified = false;
-  } else {
-    user = new User({ phoneNumber, otp, verified: false });
+  if (!user) {
+    user = new User({ phoneNumber });
   }
 
   await user.save();
 
   try {
-    await client.messages.create({
-      body: `Your OTP code is ${otp}`,
-      from: process.env.TWILIO_PHONE_NUMBER,
-      to: phoneNumber,
-    });
-
-    res.status(200).send({ message: "OTP sent successfully" });
+    await client.verify.v2
+      .services(process.env.TWILIO_SERVICE_SID)
+      .verifications.create({ to: `+91${phoneNumber}`, channel: "sms" })
+      .then((verification) => {
+        console.log(verification.sid);
+        res.status(200).send({ message: "OTP sent successfully" });
+      });
   } catch (error) {
     console.error(error);
     res.status(500).send({ message: "Failed to send OTP" });
@@ -100,14 +96,19 @@ exports.VerifyCode = async(req, res) => {
 
   const user = await User.findOne({ phoneNumber });
 
-  if (user && user.otp === otp) {
-    user.verified = true;
-    await user.save();
-
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: 3600,
-    });
-    res.status(200).send({ token });
+  if (user) {
+    client.verify.v2
+      .services(process.env.TWILIO_SERVICE_SID)
+      .verificationChecks.create({ to: `+91${phoneNumber}`, code: otp })
+      .then((verification_check) => {
+        console.log(verification_check);
+        if (verification_check.status) {
+          const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+            expiresIn: 3600,
+          });
+          res.status(200).send({ token });
+        }
+      });
   } else {
     res.status(400).send({ message: "Invalid OTP" });
   }
