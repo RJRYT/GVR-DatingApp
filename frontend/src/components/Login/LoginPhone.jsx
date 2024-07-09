@@ -1,0 +1,75 @@
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../Instance/Axios";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
+
+const LoginPhone = () => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otp, setOtp] = useState("");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const navigate = useNavigate();
+
+  const handleSendOtp = async (e) => {
+    e.preventDefault();
+    try {
+      await axiosInstance.post("/auth/number/sendotp", { phoneNumber });
+      setIsOtpSent(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleVerifyOtp = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axiosInstance.post("/auth/number/verifyotp", {
+        phoneNumber,
+        otp,
+      });
+      localStorage.setItem("token", res.data.token);
+      navigate("/home");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <Container>
+      <Row className="justify-content-md-center">
+        <Col xs={12} md={6}>
+          <h2>Login with Phone Number</h2>
+          <Form onSubmit={isOtpSent ? handleVerifyOtp : handleSendOtp}>
+            <Form.Group controlId="formBasicPhoneNumber">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type="tel"
+                placeholder="Enter phone number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                disabled={isOtpSent}
+              />
+            </Form.Group>
+
+            {isOtpSent && (
+              <Form.Group controlId="formBasicOtp">
+                <Form.Label>OTP</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter OTP"
+                  value={otp}
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+              </Form.Group>
+            )}
+
+            <Button className="m-3" variant="primary" type="submit">
+              {isOtpSent ? "Verify OTP" : "Send OTP"}
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+    </Container>
+  );
+};
+
+export default LoginPhone;
