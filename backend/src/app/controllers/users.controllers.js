@@ -2,7 +2,7 @@ const User = require("../models").user;
 const jwt = require('jsonwebtoken');
 
 exports.test = (req, res) => {
-  res.json({"message": "hi"});
+  res.json({"message": "hello world from users"});
 };
 
 // Middleware to protect routes

@@ -11,7 +11,7 @@ const client = new twilio(
 const User = require("../models").user;
 
 exports.test = (req, res) => {
-  res.json({ message: "hi" });
+  res.json({ message: "hello world from auth" });
 };
 
 exports.doLogin = async (req, res) => {
