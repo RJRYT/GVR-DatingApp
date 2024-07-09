@@ -1,8 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axiosInstance from "../../Instance/Axios";
+import axiosInstance from "../../../Instance/Axios";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 const Register = () => {
   const [username, setUsername] = useState("");

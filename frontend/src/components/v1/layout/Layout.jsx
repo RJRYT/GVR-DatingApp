@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 function Layout() {
   const { user } = useContext(AuthContext);

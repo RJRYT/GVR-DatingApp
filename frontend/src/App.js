@@ -3,11 +3,11 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Layout from "./components/layout/Layout";
-import DashBoard from "./components/DashBoard/dashBoard";
-import Login from "./components/Login/Login";
-import LoginPhone from "./components/Login/LoginPhone";
-import Register from "./components/Register/Register";
+import Layout from "./components/v1/layout/Layout";
+import DashBoard from "./components/v1/DashBoard/dashBoard";
+import Login from "./components/v1/Login/Login";
+import LoginPhone from "./components/v1/Login/LoginPhone";
+import Register from "./components/v1/Register/Register";
 import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {

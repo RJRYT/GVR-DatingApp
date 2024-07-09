@@ -1,8 +1,8 @@
 import React, { useEffect, useContext } from "react";
-import axiosInstance from "../../Instance/Axios";
+import axiosInstance from "../../../Instance/Axios";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 const DashBoard = () => {
   const { user, login, addToken } = useContext(AuthContext);

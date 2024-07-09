@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import LinkContainer from "./LinkContainer";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AuthContext } from "../../../contexts/AuthContext";
 
 function Header() {
   const { user, logout } = useContext(AuthContext);
