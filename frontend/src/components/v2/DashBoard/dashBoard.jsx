@@ -38,16 +38,16 @@ const DashBoard = () => {
   }, [navigate]);
 
   return (
-    <Container>
-      <Row className="justify-content-md-center">
+    <Container className="bg-white text-dark py-3 pb-5 text-center">
+      <Row className="justify-content-center">
         <Col xs={12} md={6}>
-          <h2>Dashboard</h2>
+          <h2 className="text-dark fa-4x">Dashboard</h2>
           {user ? (
             <div>
-              <h3>Welcome, {user.username}</h3>
+              <h3 className="text-dark">Welcome, {user.username}</h3>
             </div>
           ) : (
-            <p>Loading...</p>
+            <p className="text-dark">Loading...</p>
           )}
         </Col>
       </Row>

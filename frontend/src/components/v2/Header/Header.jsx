@@ -28,7 +28,7 @@ function Header() {
             ) : (
               <>
                 <LinkContainer to="/profile">Profile</LinkContainer>
-                <LinkContainer to="#logout">
+                <LinkContainer to="./">
                   <Nav.Item onClick={logout}>Logout</Nav.Item>
                 </LinkContainer>
               </>
