@@ -1,0 +1,261 @@
+
+/*
+*Login css
+*/
+
+.login-form {
+    background: url("../../../assets/images/pattern/02.png") no-repeat 0 0;
+    background-color: rgba(0, 0, 0, 0);
+    background-origin: initial;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover !important;
+    position: relative;
+    z-index: 0;
+}
+
+[class*='bg-overlay-']:before {
+    z-index: 0;
+}
+
+.bg-overlay-black-30:before {
+    background: rgba(0, 0, 0, 0.3);
+    content: "";
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+}
+
+.page-section-ptb {
+    padding: 80px 0;
+}
+
+@media screen and (max-width: 991px) {
+    .page-section-ptb {
+        padding: 50px 0;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .page-section-ptb {
+        padding: 60px 0;
+    }
+}
+
+.login-form-inner {
+    background: url("../../../assets/images/login-bg.png") no-repeat 0 0;
+    position: relative;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    padding: 30px;
+    border-radius: 10px;
+    border: 4px solid #e81d62;
+}
+
+.divider {
+    position: relative;
+    display: inline-block;
+    padding-bottom: 20px;
+}
+
+.divider:before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    display: inline-block;
+    left: 50%;
+    margin-left: -48px;
+    width: 97px;
+    height: 3px;
+    background: url("../../../assets/images/divider/bar2.png") no-repeat 0 0;
+}
+
+.login-social li {
+    float: left;
+    padding: 0;
+    width: 50%;
+    margin: 0;
+    list-style: none;
+}
+
+.login-social li i {
+    font-size: 20px;
+    margin-right: 15px;
+}
+
+.login-social li a.otp {
+    background: #4c70ad;
+    border-radius: 3px;
+    color: #fff;
+    display: block;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    background: #5ac8fa;
+    background: -webkit-linear-gradient(90deg, #5ac8fa, #5856d6);
+    background: -o-linear-gradient(90deg, #5ac8fa, #5856d6);
+    background: -moz-linear-gradient(90deg, #5ac8fa, #5856d6);
+    background: linear-gradient(90deg, #5ac8fa, #5856d6);
+    text-decoration: none;
+}
+
+.login-social li a.google {
+    background: #db5442;
+    border-radius: 3px;
+    color: #fff;
+    display: block;
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 30px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    background: #d75a53;
+    background: -webkit-linear-gradient(-90deg, #d75a53, #ff2d55);
+    background: -o-linear-gradient(-90deg, #d75a53, #ff2d55);
+    background: -moz-linear-gradient(-90deg, #d75a53, #ff2d55);
+    background: linear-gradient(-90deg, #d75a53, #ff2d55);
+    text-decoration: none;
+}
+
+.login-form .field-widget {
+    position: relative;
+}
+
+.login-form .field-widget i {
+    color: #fff;
+    left: 0;
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+}
+
+.login-form .field-widget input {
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid #c7b7cf;
+    height: 50px;
+    padding-left: 40px;
+    color: #ffffff;
+}
+
+.button {
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    color: #656565;
+    font-weight: 500;
+    letter-spacing: 1px;
+    line-height: 100%;
+    margin: 10px 0;
+    outline: 0 none;
+    padding: 15px 50px;
+    position: relative;
+    text-transform: capitalize;
+    white-space: nowrap;
+    border: 2px solid #ddd;
+}
+
+.button:hover {
+    color: #656565;
+    text-decoration: none;
+}
+
+.button,
+.button.animated.right-icn span,
+.button.animated.right-icn i {
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+    transition: all .2s ease-out;
+}
+
+.button.btn-theme {
+    background: rgb(232, 29, 98);
+    background: -moz-linear-gradient(30deg, rgb(232, 29, 98) 30%, rgb(224, 86, 109) 70%);
+    background: -webkit-linear-gradient(30deg, rgb(232, 29, 98) 30%, rgb(224, 86, 109) 70%);
+    background: -o-linear-gradient(30deg, rgb(232, 29, 98) 30%, rgb(224, 86, 109) 70%);
+    background: -ms-linear-gradient(30deg, rgb(232, 29, 98) 30%, rgb(224, 86, 109) 70%);
+    background: linear-gradient(120deg, rgb(232, 29, 98) 30%, rgb(224, 86, 109) 70%);
+    border: none;
+    color: #ffffff !important;
+    -webkit-box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.1);
+}
+
+.button.full-rounded {
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    overflow: hidden;
+    position: relative;
+    z-index: 9;
+    vertical-align: bottom;
+}
+
+.button:hover.animated.right-icn span {
+    -webkit-transform: translate(-20px, 0);
+    -ms-transform: translate(-20px, 0);
+    transform: translate(-20px, 0);
+    ms-transform: translate(-20px, 0);
+}
+
+.button.animated.right-icn span {
+    width: 100%;
+    height: 100%;
+    display: block;
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    transform: translate(0, 0);
+    ms-transform: translate(0, 0);
+    -webkit-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+    ms-backface-visibility: hidden;
+}
+
+.button.right-icn i {
+    margin-left: 10px;
+    margin-right: 0;
+    font-size: 15px;
+}
+
+.button.animated.right-icn i {
+    position: absolute;
+    display: block;
+    top: 50%;
+    right: 0;
+    -webkit-transform: translate(40px, -50%);
+    -ms-transform: translate(40px, -50%);
+    transform: translate(40px, -50%);
+    ms-transform: translate(40px, -50%);
+    opacity: 0;
+}
+
+.button:hover.animated.right-icn i {
+    opacity: 1;
+}
+
+.lead {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 30px;
+    margin-bottom: 0;
+}
+
+@media screen and (max-width: 767px) {
+    .lead {
+        font-size: 14px;
+        line-height: 24px;
+    }
+}
+

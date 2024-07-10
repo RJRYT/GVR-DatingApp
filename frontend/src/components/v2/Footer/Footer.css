@@ -1,0 +1,87 @@
+
+/*
+*footer css
+*/
+
+.footersection {
+    padding: 30px 0;
+    background: #000000;
+}
+
+.social-icons.color-hover {
+    display: inline-block;
+}
+
+.social-icons ul {
+    padding: 0;
+}
+
+.social-icons li {
+    float: left;
+    list-style: none;
+    padding: 0;
+    margin: 0 8px 8px 0;
+}
+
+.social-icons li:last-child {
+    margin-right: 0;
+}
+
+.text-white .social-icons li a {
+    color: #ffffff;
+}
+
+@media screen and (max-width: 1200px) {
+    .social-icons li a {
+        margin: 0 5px 5px 0;
+    }
+}
+
+.social-icons li a {
+    float: left;
+    height: 32px;
+    width: 32px;
+    line-height: 33px;
+    font-size: 16px;
+    text-align: center;
+    margin: 0;
+    border-radius: 4px;
+    border: 0;
+    background: transparent;
+    color: #333;
+    overflow: hidden;
+    -webkit-transition: all .3s ease;
+    -o-transition: all .3s ease;
+    transition: all .3s ease;
+}
+
+.social-icons.color a,
+.social-icons.color-hover a:hover {
+    color: #fff;
+    border: 0;
+}
+
+.social-icons.color .social-facebook a,
+.social-icons.color-hover .social-facebook a:hover {
+    background-color: #5d82d1;
+}
+
+.social-icons.color .social-twitter a,
+.social-icons.color-hover .social-twitter a:hover {
+    background-color: #40bff5;
+}
+
+.social-icons.color .social-dribbble a,
+.social-icons.color-hover .social-dribbble a:hover {
+    background-color: #f7659c;
+}
+
+.social-icons.color .social-gplus a,
+.social-icons.color-hover .social-gplus a:hover {
+    background-color: #db5442;
+}
+
+.social-icons.color .social-youtube a,
+.social-icons.color-hover .social-youtube a:hover {
+    background-color: #ef4e41;
+}

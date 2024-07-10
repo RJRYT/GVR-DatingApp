@@ -1,0 +1,29 @@
+
+/*
+* Header css
+*/
+
+.togglebutton, .togglebutton:hover, .togglebutton.active, .togglebutton:focus{
+    color: white;
+    border: none;
+    box-shadow: none;
+}
+
+.togglebutton > span {
+    background-image:url("data:image/svg+xml,%3csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 30 30%27%3e%3cpath stroke=%27rgb%28240, 240, 240%29%27 stroke-linecap=%27round%27 stroke-miterlimit=%2710%27 stroke-width=%272%27 d=%27M4 7h22M4 15h22M4 23h22%27/%3e%3c/svg%3e");
+}
+
+.colorwhite, .colorwhite:hover, .colorwhite.active, .hovercolorpink {
+    color: white;
+}
+
+.hovercolorpink:hover, .hovercolorpink.active {
+    color: #e81d62 !important;
+}
+
+.navbar-nav a {
+    line-height: 35px;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+}
