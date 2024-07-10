@@ -5,7 +5,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../../contexts/AuthContext";
 import Intro from "../Intro/Intro";
 import "./Register.css";
-
+ 
 const Register = () => {
   const [formData, setFormData] = useState({
     username: "",

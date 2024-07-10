@@ -15,18 +15,24 @@ module.exports = function (passport) {
           googleId: profile.id,
           username: profile.displayName,
           email: profile.emails[0].value,
+          emailVerified: true
         };
 
         try {
           let user = await User.findOne({ googleId: profile.id });
           if (user) {
             done(null, user);
+            if (user?.firstLogin) {
+              user.firstLogin = false;
+              await user.save();
+            }
           } else {
             user = await User.create(newUser);
             done(null, user);
           }
         } catch (err) {
           console.error(err);
+          done(err, null);
         }
       }
     )

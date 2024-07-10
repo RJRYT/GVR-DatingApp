@@ -26,20 +26,26 @@ exports.doLogin = async (req, res) => {
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
       expiresIn: 3600,
     });
+
+    if(user?.firstLogin) {
+      user.firstLogin = false;
+      await user.save();
+    }
+
     res.json({ token });
   } catch (err) {
     console.error(err);
     res.status(500).json({message:"Server error"});
   }
 };
-
+ 
 exports.doRegister = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, phoneNumber } = req.body;
   try {
     let user = await User.findOne({ email });
     if (user) return res.status(400).json({ message: "User already exists" });
 
-    user = new User({ username, email, password });
+    user = new User({ username, email, password, phoneNumber });
     await user.save();
     const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
       expiresIn: 3600,
@@ -100,12 +106,17 @@ exports.VerifyCode = async(req, res) => {
     client.verify.v2
       .services(process.env.TWILIO_SERVICE_SID)
       .verificationChecks.create({ to: `+91${phoneNumber}`, code: otp })
-      .then((verification_check) => {
+      .then(async(verification_check) => {
         console.log(verification_check);
         if (verification_check.status) {
           const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
             expiresIn: 3600,
           });
+          user.numberVerified = true;
+          if (user?.firstLogin) {
+            user.firstLogin = false;
+          }
+          await user.save();
           res.status(200).send({ token });
         }
       });
