@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../../Instance/Axios";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../../contexts/AuthContext";
 import Intro from "../Intro/Intro";
 import "./Register.css";
