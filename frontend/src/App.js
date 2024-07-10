@@ -8,6 +8,7 @@ import DashBoard from "./components/v2/DashBoard/dashBoard";
 import Login from "./components/v2/Login/Login";
 import LoginPhone from "./components/v2/Login/LoginPhone";
 import Register from "./components/v2/Register/Register";
+import NotFound from "./components/v2/NotFound/NotFound";
 import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
@@ -20,8 +21,8 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/login/phone" element={<LoginPhone />} />
             <Route path="/register" element={<Register />} />
+            <Route path="*" element={<NotFound />} />
           </Route>
-          <Route path="*" element={<div>404</div>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

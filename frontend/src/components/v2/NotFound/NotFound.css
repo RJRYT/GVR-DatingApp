@@ -1,0 +1,204 @@
+.error-page {
+    padding-top: 200px;
+}
+
+.page-section-ptb {
+    padding: 80px 0;
+}
+
+@media screen and (max-width: 767px) {
+    .page-section-ptb {
+        padding: 40px 0;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .page-section-ptb {
+        padding: 50px 0;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .page-section-ptb {
+        padding: 60px 0;
+    }
+}
+
+@media screen and (max-width: 1570px) {
+    .error-page {
+        overflow: hidden;
+    }
+}
+
+.big-title {
+    font-size: 350px;
+    font-weight: normal;
+    line-height: 350px;
+    background: -webkit-linear-gradient(180deg, #e81d62, #ffbc05);
+    background: linear-gradient(180deg, #e81d62, #e81d62, #ffbc05);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Great Vibes', cursive;
+}
+
+@media screen and (max-width: 479px) {
+    .big-title {
+        font-size: 150px;
+        line-height: 120px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .big-title {
+        font-size: 200px;
+        line-height: 160px;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .big-title {
+        font-size: 250px;
+        line-height: 220px;
+    }
+}
+
+.error-page:before {
+    content: "";
+    right: 50px;
+    bottom: 0;
+    position: absolute;
+}
+
+.error-page:before {
+    background: url("../../../assets/images/error-404.png") no-repeat 0 0;
+    width: 587px;
+    height: 889px;
+    background-size: contain;
+}
+
+@media screen and (max-width: 1200px) {
+    .error-page::before {
+        height: 500px;
+        right: -150px;
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1570px) {
+    .error-page::before {
+        height: 700px;
+        right: -50px;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .lead {
+        font-size: 14px;
+        line-height: 24px;
+    }
+}
+
+.lead {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 30px;
+    margin-bottom: 0;
+}
+
+.button {
+    cursor: pointer;
+    display: inline-block;
+    font-family: 'Montserrat', sans-serif;
+    color: #656565;
+    font-weight: 500;
+    letter-spacing: 1px;
+    line-height: 100%;
+    margin: 10px 0;
+    outline: 0 none;
+    padding: 15px 50px;
+    position: relative;
+    text-transform: capitalize;
+    white-space: nowrap;
+    border: 2px solid #ddd;
+}
+
+.button:hover {
+    color: #656565;
+    text-decoration: none;
+}
+
+.button,
+.button.animated.right-icn span,
+.button.animated.right-icn i {
+    -webkit-transition: all .2s ease-out;
+    -moz-transition: all .2s ease-out;
+    transition: all .2s ease-out;
+}
+
+.button.btn-theme {
+    background: rgb(232, 29, 98);
+    background: -moz-linear-gradient(30deg, rgb(232, 29, 98) 30%, rgb(224, 86, 109) 70%);
+    background: -webkit-linear-gradient(30deg, rgb(232, 29, 98) 30%, rgb(224, 86, 109) 70%);
+    background: -o-linear-gradient(30deg, rgb(232, 29, 98) 30%, rgb(224, 86, 109) 70%);
+    background: -ms-linear-gradient(30deg, rgb(232, 29, 98) 30%, rgb(224, 86, 109) 70%);
+    background: linear-gradient(120deg, rgb(232, 29, 98) 30%, rgb(224, 86, 109) 70%);
+    border: none;
+    color: #ffffff !important;
+    -webkit-box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 8px 5px rgba(0, 0, 0, 0.1);
+}
+
+.button.full-rounded {
+    -webkit-border-radius: 50px;
+    -moz-border-radius: 50px;
+    border-radius: 50px;
+    overflow: hidden;
+    position: relative;
+    z-index: 9;
+    vertical-align: bottom;
+}
+
+.button:hover.animated.right-icn span {
+    -webkit-transform: translate(-20px, 0);
+    -ms-transform: translate(-20px, 0);
+    transform: translate(-20px, 0);
+    ms-transform: translate(-20px, 0);
+}
+
+.button.animated.right-icn span {
+    width: 100%;
+    height: 100%;
+    display: block;
+    -webkit-transform: translate(0, 0);
+    -ms-transform: translate(0, 0);
+    transform: translate(0, 0);
+    ms-transform: translate(0, 0);
+    -webkit-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    -o-backface-visibility: hidden;
+    backface-visibility: hidden;
+    ms-backface-visibility: hidden;
+}
+
+.button.right-icn i {
+    margin-left: 10px;
+    margin-right: 0;
+    font-size: 15px;
+}
+
+.button.animated.right-icn i {
+    position: absolute;
+    display: block;
+    top: 50%;
+    right: 0;
+    -webkit-transform: translate(40px, -50%);
+    -ms-transform: translate(40px, -50%);
+    transform: translate(40px, -50%);
+    ms-transform: translate(40px, -50%);
+    opacity: 0;
+}
+
+.button:hover.animated.right-icn i {
+    opacity: 1;
+}
