@@ -1,9 +1,9 @@
 
 /*
-*Login css
+*Register css
 */
 
-.login-form {
+.register-form {
     background: url("../../../assets/images/pattern/02.png") no-repeat 0 0;
     background-color: rgba(0, 0, 0, 0);
     background-origin: initial;
@@ -45,7 +45,7 @@
     }
 }
 
-.login-form-inner {
+.register-form-inner {
     background: url("../../../assets/images/login-bg.png") no-repeat 0 0;
     position: relative;
     background-size: cover;
@@ -74,7 +74,7 @@
     background: url("../../../assets/images/divider/bar2.png") no-repeat 0 0;
 }
 
-.login-social li {
+.register-social li {
     float: left;
     padding: 0;
     width: 50%;
@@ -82,12 +82,12 @@
     list-style: none;
 }
 
-.login-social li i {
+.register-social li i {
     font-size: 20px;
     margin-right: 15px;
 }
 
-.login-social li a.otp {
+.register-social li a.otp {
     background: #4c70ad;
     border-radius: 3px;
     color: #fff;
@@ -105,7 +105,7 @@
     text-decoration: none;
 }
 
-.login-social li a.google {
+.register-social li a.google {
     background: #db5442;
     border-radius: 3px;
     color: #fff;
@@ -123,11 +123,11 @@
     text-decoration: none;
 }
 
-.login-form .field-widget {
+.register-form .field-widget {
     position: relative;
 }
 
-.login-form .field-widget i {
+.register-form .field-widget i {
     color: #fff;
     left: 0;
     padding: 0;
@@ -137,7 +137,7 @@
     font-size: 20px;
 }
 
-.login-form .field-widget input {
+.register-form .field-widget input {
     width: 100%;
     background: none;
     border: none;
@@ -147,7 +147,7 @@
     color: #ffffff;
 }
 
-.login-form .section-field .error {
+.register-form .section-field .error {
     color: red;
     font-size: 12px;
     margin-top: 5px;

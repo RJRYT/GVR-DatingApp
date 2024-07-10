@@ -1,112 +1,239 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../../Instance/Axios";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../../contexts/AuthContext";
 import Intro from "../Intro/Intro";
+import "./Register.css";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    phoneNumber: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { user, addToken } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      if (user) {
-        navigate("/home");
-        return;
-      }
-    };
-    fetchUser();
+    if (user) {
+      navigate("/home");
+      return;
+    }
   }, [navigate]);
+
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Username validation
+    if (!formData.username) {
+      newErrors.username = "Username is required";
+    } else if (!/^[a-zA-Z0-9_]{3,15}$/.test(formData.username)) {
+      newErrors.username =
+        "Username must be 3-15 characters long and can only contain letters, numbers, and underscores";
+    }
+
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    // Phone number validation
+    if (!formData.phoneNumber) {
+      newErrors.phoneNumber = "Phone number is required";
+    } else if (!/^\d{10}$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = "Phone number must be 10 digits long";
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    } else if (formData.password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long";
+    }
+
+    // Confirm password validation
+    if (formData.confirmPassword !== formData.password) {
+      newErrors.confirmPassword = "Passwords do not match";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axiosInstance.post("/auth/email/register", {
-        username,
-        email,
-        password,
-      });
-      addToken(res.data.token);
-      navigate("/home");
-    } catch (err) {
-      console.error(err);
-      alert(err.response?.data.message || "Something Broken..! Try again later");
+    if (validateForm()) {
+      setIsSubmitting(true);
+      try {
+        const res = await axiosInstance.post("/auth/email/register", formData);
+        addToken(res.data.token);
+        navigate("/home");
+        alert("Registration Success");
+      } catch (err) {
+        console.error(err);
+        alert(
+          err.response?.data.message || "Something Broken..! Try again later"
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
     }
-  };
-
-  const handleGoogleRegister = () => {
-    window.location.href =
-      process.env.REACT_APP_API_URL + "/api/auth/google/login";
-  };
-
-  const handlePhoneRegister = () => {
-    navigate("/login/phone");
   };
 
   return (
     <>
-      <Intro page="Register" />
-      <Container>
-        <Row className="justify-content-md-center">
-          <Col xs={12} md={6}>
-            <h2>Register</h2>
-            <Form onSubmit={handleSubmit}>
-              <Form.Group controlId="formBasicUsername">
-                <Form.Label>Username</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter username"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicEmail">
-                <Form.Label>Email address</Form.Label>
-                <Form.Control
-                  type="email"
-                  placeholder="Enter email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Form.Group>
-
-              <Form.Group controlId="formBasicPassword">
-                <Form.Label>Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Form.Group>
-
-              <Button variant="primary" type="submit" className="m-3">
-                Register
-              </Button>
-            </Form>
-            <Button
-              variant="danger"
-              onClick={handleGoogleRegister}
-              className="m-3"
-            >
-              Register with Google
-            </Button>
-
-            <Button
-              variant="secondary"
-              onClick={handlePhoneRegister}
-              className="m-3"
-            >
-              Register with Phone Number
-            </Button>
-          </Col>
-        </Row>
-      </Container>
+      <Intro page="Sign Up" />
+      <section className="register-form page-section-ptb bg-overlay-black-30">
+        <Container>
+          <Row className="justify-content-center">
+            <Col lg={6}>
+              <div className="register-form-inner clearfix text-center">
+                <h4 className="title divider text-white">SIGN UP</h4>
+                <form noValidate onSubmit={handleSubmit}>
+                  <div className="section-field mb-3">
+                    <div className="field-widget">
+                      <i className="fa fa-user"></i>
+                      <input
+                        id="username"
+                        type="text"
+                        placeholder="Username"
+                        name="username"
+                        value={formData.username}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {errors.username && (
+                      <div className="error">{errors.username}</div>
+                    )}
+                  </div>
+                  <div className="section-field mb-3">
+                    <div className="field-widget">
+                      <i className="fa fa-envelope"></i>
+                      <input
+                        id="email"
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {errors.email && (
+                      <div className="error">{errors.email}</div>
+                    )}
+                  </div>
+                  <div className="section-field mb-3">
+                    <div className="field-widget">
+                      <i className="fa fa-mobile"></i>
+                      <input
+                        id="phoneNumber"
+                        type="tel"
+                        placeholder="Phone Number"
+                        name="phoneNumber"
+                        value={formData.phoneNumber}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {errors.phoneNumber && (
+                      <div className="error">{errors.phoneNumber}</div>
+                    )}
+                  </div>
+                  <div className="section-field mb-3">
+                    <div className="field-widget">
+                      <i className="fa fa-lock"></i>
+                      <input
+                        id="password"
+                        type="password"
+                        placeholder="Password"
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {errors.password && (
+                      <div className="error">{errors.password}</div>
+                    )}
+                  </div>
+                  <div className="section-field mb-3">
+                    <div className="field-widget">
+                      <i className="fa fa-lock"></i>
+                      <input
+                        id="confirmPassword"
+                        type="password"
+                        placeholder="confirm Password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                      />
+                    </div>
+                    {errors.confirmPassword && (
+                      <div className="error">{errors.confirmPassword}</div>
+                    )}
+                  </div>
+                  <div className="clearfix"></div>
+                  <div className="section-field text-end mt-2">
+                    <button
+                      type="submit"
+                      className="button btn-lg btn-theme full-rounded animated right-icn text-decoration-none text-uppercase"
+                      disabled={isSubmitting}
+                    >
+                      <span>
+                        {isSubmitting ? "Signing Up..." : "Sign Up"}
+                        <i className="fa fa-heart" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                  </div>
+                  <div className="clearfix"></div>
+                  <div className="section-field mt-2 text-center text-white">
+                    <p className="lead mb-0">
+                      Have an account?
+                      <Link className="text-white" to="/login">
+                        <u> Sign In!</u>
+                      </Link>
+                    </p>
+                  </div>
+                </form>
+                <div className="register-social my-4 my-md-5 text-center clearfix">
+                  <ul className="list-inline text-capitalize">
+                    <li>
+                      <Link
+                        className="align-items-center d-flex otp justify-content-center"
+                        to="/login/phone?register=true"
+                      >
+                        <i className="fa fa-mobile"></i> Sign Up With OTP
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="align-items-center d-flex google justify-content-center"
+                        to={`${process.env.REACT_APP_API_URL}/api/auth/google/login`}
+                      >
+                        <i className="fa fa-google"></i> Sign Up With google
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
     </>
   );
 };

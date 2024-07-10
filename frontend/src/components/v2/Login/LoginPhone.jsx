@@ -1,93 +1,210 @@
 import React, { useState, useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../../Instance/Axios";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../../contexts/AuthContext";
 import Intro from "../Intro/Intro";
+import "./Login.css";
 
 const LoginPhone = () => {
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [otp, setOtp] = useState("");
+  const [formData, setFormData] = useState({
+    phoneNumber: "",
+    otp: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const navigate = useNavigate();
   const { user, addToken } = useContext(AuthContext);
 
+  const urlParams = new URLSearchParams(window.location.search);
+  const isRegister = urlParams.get("register");
+
   const handleSendOtp = async (e) => {
+    const newErrors = {};
     e.preventDefault();
-    try {
-      await axiosInstance.post("/auth/number/sendotp", { phoneNumber });
-      setIsOtpSent(true);
-    } catch (err) {
-      console.error(err);
-      alert(err.response.data.message);
+    const validNumber = new RegExp("^[0-9]{10}$");
+    if (!formData.phoneNumber) {
+      newErrors.phoneNumber = "Phone number is required";
+      setErrors(newErrors);
+    } else if (!validNumber.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = "Phone number must be 10 digits long";
+      setErrors(newErrors);
+    } else {
+      setErrors({});
+      setIsSubmitting(true);
+      try {
+        await axiosInstance.post("/auth/number/sendotp", {
+          phoneNumber: formData.phoneNumber,
+        });
+        setIsOtpSent(true);
+      } catch (err) {
+        console.error(err);
+        alert(
+          err.response?.data.message || "Something Broken..! Try again later"
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
+  const ResentOTP = (e) => {
+    e.preventDefault();
+    setIsOtpSent(false);
+    setFormData((prevData) => ({
+      ...prevData,
+      otp: "",
+    }));
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   useEffect(() => {
-    const fetchUser = async () => {
-      if (user) {
-        navigate("/home");
-        return;
-      }
-    };
-    fetchUser();
+    if (user) {
+      navigate("/home");
+      return;
+    }
   }, [navigate]);
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axiosInstance.post("/auth/number/verifyotp", {
-        phoneNumber,
-        otp,
-      });
-      addToken(res.data.token);
-      navigate("/home");
-    } catch (err) {
-      console.error(err);
-      alert(
-        err.response?.data.message || "Something Broken..! Try again later"
-      );
+    const newErrors = {};
+    const validOTP = new RegExp("^[0-9]{10}$");
+    if (!formData.phoneNumber) {
+      newErrors.otp = "OTP is required";
+      setErrors(newErrors);
+    } else if (!validOTP.test(formData.otp)) {
+      newErrors.otp = "OTP must be 6 digits long";
+      setErrors(newErrors);
+    } else {
+      setErrors({});
+      setIsSubmitting(true);
+      try {
+        const res = await axiosInstance.post("/auth/number/verifyotp", {
+          phoneNumber: formData.phoneNumber,
+          otp: formData.otp,
+        });
+        addToken(res.data.token);
+        navigate("/home");
+      } catch (err) {
+        console.error(err);
+        alert(
+          err.response?.data.message || "Something Broken..! Try again later"
+        );
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
   return (
     <>
-      <Intro page="Login" />
-      <Container>
-        <Row className="justify-content-md-center">
-          <Col xs={12} md={6}>
-            <h2>Login with Phone Number</h2>
-            <Form onSubmit={isOtpSent ? handleVerifyOtp : handleSendOtp}>
-              <Form.Group controlId="formBasicPhoneNumber">
-                <Form.Label>Phone Number</Form.Label>
-                <Form.Control
-                  type="tel"
-                  placeholder="Enter phone number"
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  disabled={isOtpSent}
-                />
-              </Form.Group>
-
-              {isOtpSent && (
-                <Form.Group controlId="formBasicOtp">
-                  <Form.Label>OTP</Form.Label>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter OTP"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                  />
-                </Form.Group>
-              )}
-
-              <Button className="m-3" variant="primary" type="submit">
-                {isOtpSent ? "Verify OTP" : "Send OTP"}
-              </Button>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
+      <Intro page={isRegister ? "Sign Up" : "Sign In"} />
+      <section className="login-form page-section-ptb bg-overlay-black-30">
+        <Container>
+          <Row className="justify-content-center">
+            <Col lg={6}>
+              <div className="login-form-inner clearfix text-center">
+                <h4 className="title divider text-white">
+                  {isRegister ? "SIGN UP" : "SIGN IN"}
+                </h4>
+                <div className="login-social my-4 my-md-5 text-center clearfix">
+                  <ul className="list-inline text-capitalize">
+                    <li>
+                      <Link
+                        className="align-items-center d-flex otp justify-content-center"
+                        to={isRegister ? "/register" : "/login"}
+                      >
+                        <i className="fa fa-user"></i>{" "}
+                        {isRegister ? "Sign Up" : "Sign In"} With Email
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        className="align-items-center d-flex google justify-content-center"
+                        to={`${process.env.REACT_APP_API_URL}/api/auth/google/login`}
+                      >
+                        <i className="fa fa-google"></i>{" "}
+                        {isRegister ? "Sign Up" : "Sign In"} With google
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+                <form
+                  noValidate
+                  onSubmit={isOtpSent ? handleVerifyOtp : handleSendOtp}
+                >
+                  {!isOtpSent && (
+                    <div className="section-field mb-3">
+                      <div className="field-widget">
+                        <i className="fa fa-mobile"></i>
+                        <input
+                          id="phoneNumber"
+                          type="tel"
+                          placeholder="Phone Number"
+                          name="phoneNumber"
+                          value={formData.phoneNumber}
+                          onChange={handleChange}
+                          disabled={isOtpSent}
+                        />
+                      </div>
+                      {errors.phoneNumber && (
+                        <div className="error">{errors.phoneNumber}</div>
+                      )}
+                    </div>
+                  )}
+                  {isOtpSent && (
+                    <div className="section-field mb-3">
+                      <div className="field-widget">
+                        <i className="fa fa-key"></i>
+                        <input
+                          id="otp"
+                          type="number"
+                          placeholder="otp"
+                          name="otp"
+                          value={formData.otp}
+                          onChange={handleChange}
+                        />
+                      </div>
+                      {errors.otp && <div className="error">{errors.otp}</div>}
+                    </div>
+                  )}
+                  <div className="section-field">
+                    <Link
+                      to="./"
+                      className="float-end text-white text-decoration-none text-uppercase"
+                      onClick={ResentOTP}
+                    >
+                      Resend OTP
+                    </Link>
+                  </div>
+                  <div className="clearfix"></div>
+                  <div className="section-field text-end mt-2">
+                    <button
+                      type="submit"
+                      className="button btn-lg btn-theme full-rounded animated right-icn text-decoration-none text-uppercase"
+                      disabled={isSubmitting}
+                    >
+                      <span>
+                        {isOtpSent ? "Verify OTP" : "Send OTP"}
+                        <i className="fa fa-arrow-right" aria-hidden="true"></i>
+                      </span>
+                    </button>
+                  </div>
+                  <div className="clearfix"></div>
+                </form>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
     </>
   );
 };

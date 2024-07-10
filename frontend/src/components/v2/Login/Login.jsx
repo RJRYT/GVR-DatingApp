@@ -7,8 +7,12 @@ import Intro from "../Intro/Intro";
 import "./Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { user, addToken } = useContext(AuthContext);
 
@@ -19,21 +23,49 @@ const Login = () => {
     }
   }, [navigate]);
 
+  const validateForm = () => {
+    const newErrors = {};
+
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "Email is invalid";
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if(!email) alert("Provide Email");
-    else if(!password) alert("Provide Password");
-    else{
+    if (validateForm()) {
+      setIsSubmitting(true);
       try {
-        const res = await axiosInstance.post("/auth/email/login", {
-          email,
-          password,
-        });
+        const res = await axiosInstance.post("/auth/email/login", formData);
         addToken(res.data.token);
         navigate("/home");
       } catch (err) {
         console.error(err);
-        alert(err.response?.data.message || "Something Broken..! Try again later");
+        alert(
+          err.response?.data.message || "Something Broken..! Try again later"
+        );
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
@@ -67,34 +99,38 @@ const Login = () => {
                     </li>
                   </ul>
                 </div>
-                <form onSubmit={handleSubmit}>
+                <form noValidate onSubmit={handleSubmit}>
                   <div className="section-field mb-3">
                     <div className="field-widget">
                       <i className="fa fa-user"></i>
                       <input
-                        id="name"
-                        className="web"
+                        id="email"
                         type="email"
                         placeholder="Email"
-                        name="web"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
                       />
                     </div>
+                    {errors.email && (
+                      <div className="error">{errors.email}</div>
+                    )}
                   </div>
                   <div className="section-field mb-3">
                     <div className="field-widget">
                       <i className="fa fa-lock"></i>
                       <input
-                        id="Password"
-                        className="Password"
+                        id="password"
                         type="password"
                         placeholder="Password"
-                        name="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
                       />
                     </div>
+                    {errors.password && (
+                      <div className="error">{errors.password}</div>
+                    )}
                   </div>
                   <div className="section-field">
                     <Link
@@ -109,9 +145,10 @@ const Login = () => {
                     <button
                       type="submit"
                       className="button btn-lg btn-theme full-rounded animated right-icn text-decoration-none text-uppercase"
+                      disabled={isSubmitting}
                     >
                       <span>
-                        sign in
+                        {isSubmitting ? "Signing In..." : "Sign In"}
                         <i className="fa fa-heart" aria-hidden="true"></i>
                       </span>
                     </button>
@@ -120,10 +157,7 @@ const Login = () => {
                   <div className="section-field mt-2 text-center text-white">
                     <p className="lead mb-0">
                       Don’t have an account?
-                      <Link
-                        className="text-white"
-                        to="/register"
-                      >
+                      <Link className="text-white" to="/register">
                         <u>Register now!</u>
                       </Link>
                     </p>
