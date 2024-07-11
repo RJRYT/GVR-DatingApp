@@ -10,5 +10,41 @@ module.exports = app => {
       usersController.CheckUser
     );
 
+    router.post(
+      "/upload/profilepics",
+      usersController.authMiddleware,
+      usersController.uploadProfilePics.array("profilePics", 5),
+      usersController.saveUploadedPics
+    );
+
+    router.post(
+      "/upload/shortreel",
+      usersController.authMiddleware,
+      usersController.uploadReel.single("shortReel"),
+      usersController.saveUploadedReel
+    );
+
+    router.get("/profilepics/:filename", usersController.serveProfilePic);
+
+    router.get("/shortreels/:filename", usersController.serveShortReel);
+
+    router.post(
+      "/update/personalinfo",
+      usersController.authMiddleware,
+      usersController.updateUserPersonalDetails
+    );
+
+    router.post(
+      "/update/professionalinfo",
+      usersController.authMiddleware,
+      usersController.updateUserProfessinalDetails
+    );
+
+    router.post(
+      "/update/purpose",
+      usersController.authMiddleware,
+      usersController.updateUserPurposeDetails
+    );
+
     app.use("/api/users", router);
   };

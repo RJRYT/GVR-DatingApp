@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import "./Upload.css";
 
-function ImageUpload() {
+function ImageUpload({ setUpload, Uploading, Error }) {
   const [imagePreviews, setImagePreviews] = useState([]);
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
     const previews = files.map((file) => URL.createObjectURL(file));
     setImagePreviews(previews);
+    if(window.confirm("Are you sure to upload profile images ?")){
+      setUpload(files);
+    }
   };
 
   return (
@@ -21,21 +24,23 @@ function ImageUpload() {
           onChange={handleImageUpload}
           hidden
           multiple
+          disabled={Uploading}
         />
         <label htmlFor="imageUpload" className="text-start">
           Upload Profile picture
         </label>
       </div>
-        <div className="preview-container">
-          {imagePreviews.map((preview, index) => (
-            <img
-              key={index}
-              src={preview}
-              alt={`Profile pic Preview ${index + 1}`}
-              className="preview"
-            />
-          ))}
-        </div>
+      {Error.profilePics && <div className="error">{Error.profilePics}</div>}
+      <div className="preview-container">
+        {imagePreviews.map((preview, index) => (
+          <img
+            key={index}
+            src={preview}
+            alt={`Profile pic Preview ${index + 1}`}
+            className="preview"
+          />
+        ))}
+      </div>
     </>
   );
 }

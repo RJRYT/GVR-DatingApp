@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Upload.css";
 
-function ReelUpload() {
+function ReelUpload({ setUpload, Uploading, Error }) {
   const [videoPreview, setVideoPreview] = useState(null);
 
   const handleVideoUpload = (event) => {
@@ -9,6 +9,9 @@ function ReelUpload() {
     if (file) {
       const previewURL = URL.createObjectURL(file);
       setVideoPreview(previewURL);
+      if (window.confirm("Are you sure to upload this short reel ?")) {
+        setUpload(file);
+      }
     }
   };
 
@@ -22,11 +25,13 @@ function ReelUpload() {
           accept="video/mp4,video/webm"
           onChange={handleVideoUpload}
           hidden
+          disabled={Uploading}
         />
         <label htmlFor="videoUpload" className="text-start">
           Select Short Reel
         </label>
       </div>
+      {Error.shortReel && <div className="error">{Error.shortReel}</div>}
       {videoPreview && (
         <div className="preview-container">
           <video src={videoPreview} className="preview" controls />
