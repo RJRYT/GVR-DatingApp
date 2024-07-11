@@ -27,11 +27,6 @@ exports.doLogin = async (req, res) => {
       expiresIn: 3600,
     });
 
-    if(user?.firstLogin) {
-      user.firstLogin = false;
-      await user.save();
-    }
-
     res.json({ token });
   } catch (err) {
     console.error(err);
@@ -113,9 +108,6 @@ exports.VerifyCode = async(req, res) => {
             expiresIn: 3600,
           });
           user.numberVerified = true;
-          if (user?.firstLogin) {
-            user.firstLogin = false;
-          }
           await user.save();
           res.status(200).send({ token });
         }

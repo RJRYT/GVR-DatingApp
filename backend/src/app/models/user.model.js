@@ -11,7 +11,6 @@ module.exports = (mongoose) => {
       googleId: { type: String, unique: true, sparse: true },
       phoneNumber: { type: String, unique: true, sparse: true },
       date: { type: Date, default: Date.now },
-      firstLogin: { type: Boolean, default: true },
       numberVerified: { type: Boolean, default: false },
       emailVerified: { type: Boolean, default: false },
       profileSectionOneDone: { type: Boolean, default: false },
