@@ -70,7 +70,8 @@
     font-size: 20px;
 }
 
-.register-1-form .field-widget input, .register-1-form .field-widget select {
+.register-1-form .field-widget input, .register-1-form .field-widget select ,
+.register-1-form .field-widget label {
     width: 100%;
     background: none;
     border: none;
@@ -78,6 +79,21 @@
     height: 50px;
     padding-left: 40px;
     color: #ffffff;
+    cursor: pointer;
+}
+
+.register-1-form .field-widget select {
+    appearance: none;
+}
+
+.register-1-form .field-widget select > option{
+    background-color: white;
+    color: black;
+}
+
+.register-1-form .field-widget select>option:checked {
+    background-color: blue;
+    color: white;
 }
 
 .register-1-form .section-field .error {

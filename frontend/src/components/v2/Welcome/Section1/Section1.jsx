@@ -1,6 +1,8 @@
-import React from 'react';
+import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import ImageUpload from "./Upload/ImageUpload";
+import ReelUpload from "./Upload/ReelUpload";
 
 function Section1() {
   return (
@@ -49,8 +51,9 @@ function Section1() {
                   <i className="fa fa-futbol-o"></i>
                   <select id="smoking" name="smoking">
                     <option value="">Smoking Habbits</option>
-                    <option value="yes">no</option>
-                    <option value="no">no</option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="planningToQuit">Planning To Quit</option>
                   </select>
                 </div>
               </div>
@@ -59,8 +62,11 @@ function Section1() {
                   <i className="fa fa-beer" aria-hidden="true"></i>
                   <select id="drining" name="drining">
                     <option value="">Drinking Habbits</option>
-                    <option value="yes">no</option>
-                    <option value="no">no</option>
+                    <option value="regular">Regular</option>
+                    <option value="planningToQuit">Planning To Quit</option>
+                    <option value="socially">Socially</option>
+                    <option value="occasionally">Occasionally</option>
+                    <option value="teeToTaler">Teetotaler</option>
                   </select>
                 </div>
               </div>
@@ -75,27 +81,10 @@ function Section1() {
                 </div>
               </div>
               <div className="section-field mb-3">
-                <div className="field-widget">
-                  <i className="fa fa-camera" aria-hidden="true"></i>
-                  <input
-                    id="profilepics"
-                    type="file"
-                    placeholder="Profile Pics"
-                    accept="image/*,.png,.jpg,.jpeg"
-                    multiple
-                  />
-                </div>
+                <ImageUpload />
               </div>
               <div className="section-field mb-3">
-                <div className="field-widget">
-                  <i className="fa fa-video-camera" aria-hidden="true"></i>
-                  <input
-                    id="shortreel"
-                    type="file"
-                    placeholder="Short Reel"
-                    accept="video/mp4,video/webm"
-                  />
-                </div>
+                <ReelUpload />
               </div>
               <div className="clearfix"></div>
               <div className="section-field text-uppercase text-center mt-2">
