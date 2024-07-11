@@ -1,5 +1,16 @@
 module.exports = (mongoose) => {
   const bcrypt = require("bcryptjs");
+
+  const ProfilePicSchema = mongoose.Schema({
+    url: { type: String, reqired: true },
+    uploadedAt: { type: Date, default: Date.now },
+  });
+
+  const ShortReelSchema = mongoose.Schema({
+    url: { type: String, reqired: true },
+    uploadedAt: { type: Date, default: Date.now },
+  });
+  
   const UserSchema = mongoose.Schema(
     {
       firstName: { type: String },
@@ -28,16 +39,6 @@ module.exports = (mongoose) => {
     },
     { timestamps: true }
   );
-
-  const ProfilePicSchema = mongoose.Schema({
-    url: { type: String, reqired: true },
-    uploadedAt: { type: Date, default: Date.now },
-  });
-
-  const ShortReelSchema = mongoose.Schema({
-    url: { type: String, reqired: true },
-    uploadedAt: { type: Date, default: Date.now },
-  });
 
   // Ensure sparse indexes on fields that may not be set for every user
   UserSchema.index({ username: 1 }, { unique: true, sparse: true });
