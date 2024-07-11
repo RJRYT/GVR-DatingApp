@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 function Footer() {
@@ -20,29 +21,29 @@ function Footer() {
               <div className="color-hover social-icons">
                 <ul>
                   <li className="social-facebook">
-                    <a href="#">
+                    <Link to="./">
                       <i className="fa fa-facebook"></i>
-                    </a>
+                    </Link>
                   </li>
                   <li className="social-twitter">
-                    <a href="#">
+                    <Link to="./">
                       <i className="fa fa-twitter"></i>
-                    </a>
+                    </Link>
                   </li>
                   <li className="social-dribbble">
-                    <a href="#">
+                    <Link to="./">
                       <i className="fa fa-dribbble"></i>
-                    </a>
+                    </Link>
                   </li>
                   <li className="social-gplus">
-                    <a href="#">
+                    <Link to="./">
                       <i className="fa fa-google-plus"></i>
-                    </a>
+                    </Link>
                   </li>
                   <li className="social-youtube">
-                    <a href="#">
+                    <Link to="./">
                       <i className="fa fa-youtube"></i>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>

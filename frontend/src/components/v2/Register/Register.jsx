@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
@@ -17,14 +17,13 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  const { user, addToken } = useContext(AuthContext);
+  const { addToken } = useContext(AuthContext);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/home");
-  //     return;
-  //   }
-  // }, [navigate]);
+  if (
+    localStorage.getItem("token") &&
+    localStorage.getItem("token") !== "undefined"
+  )
+    navigate("/login");
 
   const validateForm = () => {
     const newErrors = {};
@@ -83,7 +82,7 @@ const Register = () => {
       try {
         const res = await axiosInstance.post("/auth/email/register", formData);
         addToken(res.data.token);
-        navigate("/home");
+        navigate("/welcome");
         alert("Registration Success");
       } catch (err) {
         console.error(err);

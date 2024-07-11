@@ -1,50 +1,52 @@
-module.exports = app => {
-    const usersController = require("../controllers/users.controllers");
-  
-    var router = require("express").Router();
-  
-    router.get("/", usersController.test);
-    router.get(
-      "/me",
-      usersController.authMiddleware,
-      usersController.CheckUser
-    );
+module.exports = (app) => {
+  const usersController = require("../controllers/users.controllers");
 
-    router.post(
-      "/upload/profilepics",
-      usersController.authMiddleware,
-      usersController.uploadProfilePics.array("profilePics", 5),
-      usersController.saveUploadedPics
-    );
+  var router = require("express").Router();
 
-    router.post(
-      "/upload/shortreel",
-      usersController.authMiddleware,
-      usersController.uploadReel.single("shortReel"),
-      usersController.saveUploadedReel
-    );
+  router.get("/", usersController.test);
+  router.get("/me", usersController.authMiddleware, usersController.CheckUser);
 
-    router.get("/profilepics/:filename", usersController.serveProfilePic);
+  router.post(
+    "/upload/profilepics",
+    usersController.authMiddleware,
+    usersController.uploadProfilePics.array("profilePics", 5),
+    usersController.saveUploadedPics
+  );
 
-    router.get("/shortreels/:filename", usersController.serveShortReel);
+  router.post(
+    "/upload/shortreel",
+    usersController.authMiddleware,
+    usersController.uploadReel.single("shortReel"),
+    usersController.saveUploadedReel
+  );
 
-    router.post(
-      "/update/personalinfo",
-      usersController.authMiddleware,
-      usersController.updateUserPersonalDetails
-    );
+  router.get("/profilepics/:filename", usersController.serveProfilePic);
 
-    router.post(
-      "/update/professionalinfo",
-      usersController.authMiddleware,
-      usersController.updateUserProfessinalDetails
-    );
+  router.get("/shortreels/:filename", usersController.serveShortReel);
 
-    router.post(
-      "/update/purpose",
-      usersController.authMiddleware,
-      usersController.updateUserPurposeDetails
-    );
+  router.post(
+    "/update/personalinfo",
+    usersController.authMiddleware,
+    usersController.updateUserPersonalDetails
+  );
 
-    app.use("/api/users", router);
-  };
+  router.post(
+    "/update/professionalinfo",
+    usersController.authMiddleware,
+    usersController.updateUserProfessinalDetails
+  );
+
+  router.post(
+    "/update/purpose",
+    usersController.authMiddleware,
+    usersController.updateUserPurposeDetails
+  );
+
+  router.get(
+    "/status/registration",
+    usersController.authMiddleware,
+    usersController.CheckRegistrationStatus
+  );
+
+  app.use("/api/users", router);
+};

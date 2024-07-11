@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
@@ -15,10 +15,16 @@ const LoginPhone = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const navigate = useNavigate();
-  const { user, addToken } = useContext(AuthContext);
+  const { addToken } = useContext(AuthContext);
 
   const urlParams = new URLSearchParams(window.location.search);
   const isRegister = urlParams.get("register");
+
+  if (
+    localStorage.getItem("token") &&
+    localStorage.getItem("token") !== "undefined"
+  )
+    navigate("/login");
 
   const handleSendOtp = async (e) => {
     const newErrors = {};
@@ -66,13 +72,6 @@ const LoginPhone = () => {
     }));
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/home");
-  //     return;
-  //   }
-  // }, [navigate]);
-
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     const newErrors = {};
@@ -92,7 +91,7 @@ const LoginPhone = () => {
           otp: formData.otp,
         });
         addToken(res.data.token);
-        navigate("/home");
+        navigate("/welcome");
       } catch (err) {
         console.error(err);
         alert(

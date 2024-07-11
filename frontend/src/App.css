@@ -2,207 +2,212 @@
 @import url('https://fonts.googleapis.com/css?family=Engagement');
 @import url('https://fonts.googleapis.com/css?family=Great+Vibes');
 
- body {
-     font-family: 'Montserrat', sans-serif;
-     font-weight: normal;
-     font-style: normal;
-     font-size: 13px;
-     line-height: 24px;
-     color: #3d3d3d;
- }
+body {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal;
+    font-style: normal;
+    font-size: 13px;
+    line-height: 24px;
+    color: #3d3d3d;
+}
 
- a,
- .btn,
- .owl-item,
- .post,
- .story-item {
-     -webkit-transition: all 0.3s ease-out 0s;
-     -moz-transition: all 0.3s ease-out 0s;
-     -ms-transition: all 0.3s ease-out 0s;
-     -o-transition: all 0.3s ease-out 0s;
-     transition: all 0.3s ease-out 0s;
- }
+a,
+.btn,
+.owl-item,
+.post,
+.story-item {
+    -webkit-transition: all 0.3s ease-out 0s;
+    -moz-transition: all 0.3s ease-out 0s;
+    -ms-transition: all 0.3s ease-out 0s;
+    -o-transition: all 0.3s ease-out 0s;
+    transition: all 0.3s ease-out 0s;
+}
 
- a:focus {
-     text-decoration: none !important;
- }
+a:focus {
+    text-decoration: none !important;
+}
 
- a:focus,
- a:hover {
-     color: #e81d62;
-     text-decoration: none !important;
- }
+a:focus,
+a:hover {
+    color: #e81d62;
+    text-decoration: none !important;
+}
 
- a,
- button,
- input {
-     outline: medium none !important;
-     color: #e81d62;
-     text-decoration: none;
- }
+a,
+button,
+input {
+    outline: medium none !important;
+    color: #e81d62;
+    text-decoration: none;
+}
 
- h1,
- h2,
- h3,
- h4,
- h5,
- h6 {
-     font-family: 'Montserrat', sans-serif;
-     font-weight: normal;
-     margin-top: 0px;
-     margin-bottom: 0px;
-     text-transform: capitalize;
- }
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    text-transform: capitalize;
+}
 
- h1.title2,
- h2.title2,
- h3.title2,
- h4.title2,
- h5.title2,
- h6.title2 {
-     font-weight: 600;
- }
+h1.title2,
+h2.title2,
+h3.title2,
+h4.title2,
+h5.title2,
+h6.title2 {
+    font-weight: 600;
+}
 
- h1 a,
- h2 a,
- h3 a,
- h4 a,
- h5 a,
- h6 a {
-     color: inherit;
- }
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+    color: inherit;
+}
 
- h1 {
-     font-size: 72px;
-     font-style: normal;
-     line-height: 95px;
-     font-family: 'Engagement', cursive;
-     text-transform: capitalize;
-     color: #ffffff;
- }
+h1 {
+    font-size: 72px;
+    font-style: normal;
+    line-height: 95px;
+    font-family: 'Engagement', cursive;
+    text-transform: capitalize;
+    color: #ffffff;
+}
 
- h2 {
-     font-size: 50px;
-     font-style: normal;
-     line-height: 50px;
-     font-family: 'Engagement', cursive;
-     color: #000;
-     text-transform: capitalize;
- }
+h2 {
+    font-size: 50px;
+    font-style: normal;
+    line-height: 50px;
+    font-family: 'Engagement', cursive;
+    color: #000;
+    text-transform: capitalize;
+}
 
- h3 {
-     font-size: 30px;
-     font-style: normal;
-     line-height: 40px;
- }
+h3 {
+    font-size: 30px;
+    font-style: normal;
+    line-height: 40px;
+}
 
- h4 {
-     font-size: 20px;
-     font-style: normal;
-     text-transform: uppercase;
-     margin-bottom: 10px;
-     font-weight: 500;
-     line-height: 26px;
-     color: #000;
- }
+h4 {
+    font-size: 20px;
+    font-style: normal;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 500;
+    line-height: 26px;
+    color: #000;
+}
 
- h5 {
-     font-size: 16px;
-     font-style: normal;
-     line-height: 20px;
-     font-weight: 500;
- }
+h5 {
+    font-size: 16px;
+    font-style: normal;
+    line-height: 20px;
+    font-weight: 500;
+}
 
- h6 {
-     font-size: 16px;
-     font-style: normal;
-     line-height: 24px;
- }
+h6 {
+    font-size: 16px;
+    font-style: normal;
+    line-height: 24px;
+}
 
- h1.title2 {
-     font-size: 50px;
-     line-height: 56px;
- }
+h1.title2 {
+    font-size: 50px;
+    line-height: 56px;
+}
 
- h2.title2 {
-     font-size: 40px;
-     line-height: 50px;
- }
+h2.title2 {
+    font-size: 40px;
+    line-height: 50px;
+}
 
- h3.title2 {
-     font-size: 38px;
-     line-height: 48px;
- }
+h3.title2 {
+    font-size: 38px;
+    line-height: 48px;
+}
 
- h4.title2 {
-     font-size: 34px;
-     line-height: 40px;
- }
+h4.title2 {
+    font-size: 34px;
+    line-height: 40px;
+}
 
- h5.title2 {
-     font-size: 30px;
-     line-height: 36px;
- }
+h5.title2 {
+    font-size: 30px;
+    line-height: 36px;
+}
 
- h6.title2 {
-     font-size: 26px;
-     line-height: 32px;
- }
+h6.title2 {
+    font-size: 26px;
+    line-height: 32px;
+}
 
- .title2>label {
-     color: #e81d62;
-     font-weight: 600;
- }
+.title2>label {
+    color: #e81d62;
+    font-weight: 600;
+}
 
- hr {
-     margin: 0;
-     padding: 0px;
-     border-bottom: 1px solid #e0e0e0;
-     border-top: 0px;
- }
+hr {
+    margin: 0;
+    padding: 0px;
+    border-bottom: 1px solid #e0e0e0;
+    border-top: 0px;
+}
 
- label {
-     font-weight: 400;
-     color: #aaaaaa;
- }
+label {
+    font-weight: 400;
+    color: #aaaaaa;
+}
 
- .label {
-     color: #fff !important;
-     font-size: 9px !important;
- }
+.label {
+    color: #fff !important;
+    font-size: 9px !important;
+}
 
- *::-moz-selection {
-     background: #e81d62;
-     color: #fff;
-     text-shadow: none;
- }
+*::-moz-selection {
+    background: #e81d62;
+    color: #fff;
+    text-shadow: none;
+}
 
- ::-moz-selection {
-     background: #e81d62;
-     color: #fff;
-     text-shadow: none;
- }
+::-moz-selection {
+    background: #e81d62;
+    color: #fff;
+    text-shadow: none;
+}
 
- ::selection {
-     background: #e81d62;
-     color: #fff;
-     text-shadow: none;
- }
+::selection {
+    background: #e81d62;
+    color: #fff;
+    text-shadow: none;
+}
 
- .text-white h1,
- .text-white h2,
- .text-white h3,
- .text-white h4,
- .text-white h5,
- .text-white h6 {
-     color: #ffffff;
- }
+.text-white h1,
+.text-white h2,
+.text-white h3,
+.text-white h4,
+.text-white h5,
+.text-white h6 {
+    color: #ffffff;
+}
 
- .text-white h1.text-yellow,
- .text-white h2.text-yellow,
- .text-white h3.text-yellow,
- .text-white h4.text-yellow,
- .text-white h5.text-yellow,
- .text-white h6.text-yellow {
-     color: #e81d62;
- }
+.text-white h1.text-yellow,
+.text-white h2.text-yellow,
+.text-white h3.text-yellow,
+.text-white h4.text-yellow,
+.text-white h5.text-yellow,
+.text-white h6.text-yellow {
+    color: #e81d62;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}

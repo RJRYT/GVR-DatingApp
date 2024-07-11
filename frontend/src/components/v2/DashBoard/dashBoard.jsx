@@ -8,6 +8,12 @@ const DashBoard = () => {
   const { user, login, addToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
+  if (
+    !localStorage.getItem("token") ||
+    localStorage.getItem("token") === "undefined"
+  )
+    navigate("/login");
+
   useEffect(() => {
     const fetchUser = async () => {
       const urlParams = new URLSearchParams(window.location.search);
@@ -17,6 +23,7 @@ const DashBoard = () => {
         try {
           const res = await axiosInstance.get("/users/me");
           login(res.data);
+          navigate("/welcome");
         } catch (err) {
           console.error(err);
           navigate("/login");
@@ -25,7 +32,7 @@ const DashBoard = () => {
     };
 
     fetchUser();
-  }, [navigate]);
+  });
 
   return (
     <Container className="bg-white text-dark py-3 pb-5 text-center">

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
@@ -14,14 +14,13 @@ const Login = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  const { user, addToken } = useContext(AuthContext);
+  const { addToken } = useContext(AuthContext);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     navigate("/home");
-  //     return;
-  //   }
-  // }, [navigate, user]);
+  if (
+    localStorage.getItem("token") &&
+    localStorage.getItem("token") !== "undefined"
+  )
+    navigate("/login");
 
   const validateForm = () => {
     const newErrors = {};
