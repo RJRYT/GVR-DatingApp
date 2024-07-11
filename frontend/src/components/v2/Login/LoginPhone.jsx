@@ -66,12 +66,12 @@ const LoginPhone = () => {
     }));
   };
 
-  useEffect(() => {
-    if (user) {
-      navigate("/home");
-      return;
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate("/home");
+  //     return;
+  //   }
+  // }, [navigate]);
 
   const handleVerifyOtp = async (e) => {
     e.preventDefault();

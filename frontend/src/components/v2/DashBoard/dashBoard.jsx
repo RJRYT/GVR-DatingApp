@@ -9,28 +9,18 @@ const DashBoard = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("token");
-    console.log("Token: ", token);
-    if (token) {
-      addToken(token);
-    }
-  }, []);
-
-  useEffect(() => {
     const fetchUser = async () => {
-      console.log("User: ", user);
-      if (!user) {
-        navigate("/login");
-        return;
-      }
-
-      try {
-        const res = await axiosInstance.get("/users/me");
-        login(res.data);
-      } catch (err) {
-        console.error(err);
-        navigate("/login");
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
+      if (token) {
+        addToken(token);
+        try {
+          const res = await axiosInstance.get("/users/me");
+          login(res.data);
+        } catch (err) {
+          console.error(err);
+          navigate("/login");
+        }
       }
     };
 
@@ -53,6 +43,6 @@ const DashBoard = () => {
       </Row>
     </Container>
   );
-}
+};
 
 export default DashBoard;

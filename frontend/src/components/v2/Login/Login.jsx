@@ -16,12 +16,12 @@ const Login = () => {
   const navigate = useNavigate();
   const { user, addToken } = useContext(AuthContext);
 
-  useEffect(() => {
-    if (user) {
-      navigate("/home");
-      return;
-    }
-  }, [navigate]);
+  // useEffect(() => {
+  //   if (user) {
+  //     navigate("/home");
+  //     return;
+  //   }
+  // }, [navigate, user]);
 
   const validateForm = () => {
     const newErrors = {};
