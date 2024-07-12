@@ -154,6 +154,7 @@ const LoginPhone = () => {
                           value={formData.phoneNumber}
                           onChange={handleChange}
                           disabled={isOtpSent}
+                          autoComplete="tel"
                         />
                       </div>
                       {errors.phoneNumber && (
@@ -172,6 +173,7 @@ const LoginPhone = () => {
                           name="otp"
                           value={formData.otp}
                           onChange={handleChange}
+                          autoComplete="one-time-code"
                         />
                       </div>
                       {errors.otp && <div className="error">{errors.otp}</div>}

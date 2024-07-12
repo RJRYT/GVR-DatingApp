@@ -8,28 +8,28 @@ const Home = () => {
   const { user, login, addToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  useEffect(()=> {
-    if (
-      !localStorage.getItem("token") ||
-      localStorage.getItem("token") === "undefined"
-    )
-      navigate("/login");
-  });
-
   useEffect(() => {
     const fetchUser = async () => {
       const urlParams = new URLSearchParams(window.location.search);
       const token = urlParams.get("token");
       if (token) {
+        console.log("[Google OAuth] Token: ", token);
         addToken(token);
         try {
           const res = await axiosInstance.get("/users/me");
+          console.log("[Google OAuth] User: ", res.data);
           login(res.data);
           navigate("/welcome");
         } catch (err) {
-          console.error(err);
+          console.log("[Google OAuth] Error: ", err);
           navigate("/login");
         }
+      } else {
+        if (
+          !localStorage.getItem("token") ||
+          localStorage.getItem("token") === "undefined"
+        )
+          navigate("/login");
       }
     };
 

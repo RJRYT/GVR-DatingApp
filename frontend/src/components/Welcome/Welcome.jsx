@@ -43,7 +43,7 @@ function Welcome() {
       }
     };
     fetchRegistrationStatus();
-  });
+  },[navigate]);
 
   const handleNextStep = () => {
     if (step === 1) {

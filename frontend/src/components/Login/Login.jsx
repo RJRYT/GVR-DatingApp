@@ -111,6 +111,7 @@ const Login = () => {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
+                        autoComplete="email"
                       />
                     </div>
                     {errors.email && (
@@ -127,6 +128,7 @@ const Login = () => {
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
+                        autoComplete="current-password"
                       />
                     </div>
                     {errors.password && (

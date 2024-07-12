@@ -117,6 +117,7 @@ const Register = () => {
                         name="username"
                         value={formData.username}
                         onChange={handleChange}
+                        autoComplete="first-name"
                       />
                     </div>
                     {errors.username && (
@@ -133,6 +134,7 @@ const Register = () => {
                         name="email"
                         value={formData.email}
                         onChange={handleChange}
+                        autoComplete="email"
                       />
                     </div>
                     {errors.email && (
@@ -149,6 +151,7 @@ const Register = () => {
                         name="phoneNumber"
                         value={formData.phoneNumber}
                         onChange={handleChange}
+                        autoComplete="tel"
                       />
                     </div>
                     {errors.phoneNumber && (
@@ -165,6 +168,7 @@ const Register = () => {
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
+                        autoComplete="new-password"
                       />
                     </div>
                     {errors.password && (
@@ -181,6 +185,7 @@ const Register = () => {
                         name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleChange}
+                        autoComplete="new-password"
                       />
                     </div>
                     {errors.confirmPassword && (
