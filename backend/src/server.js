@@ -4,10 +4,13 @@ const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
 const bodyParser = require("body-parser");
+const morgan = require("morgan");
 
 const app = express();
 
 app.use(cors());
+
+app.use(morgan("dev"));
 
 // Body parser
 app.use(bodyParser.json());
