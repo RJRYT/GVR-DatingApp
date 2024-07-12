@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axiosInstance from "../../../../Instance/Axios";
+import axiosInstance from "../../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
 
 function Section2({ onNext }) {

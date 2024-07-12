@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axiosInstance from "../../../Instance/Axios";
+import axiosInstance from "../../Instance/Axios";
 import { useNavigate } from "react-router-dom";
 import Intro from "../Intro/Intro";
 import Section1 from "./Section1/Section1";
@@ -38,7 +38,7 @@ function Welcome() {
       }
     };
     fetchRegistrationStatus();
-  }, []);
+  });
 
   const handleNextStep = () => {
     if (step === 1) {

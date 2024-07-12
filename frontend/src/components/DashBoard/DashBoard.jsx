@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 
 const DashBoard = () => {
   const { user } = useContext(AuthContext);

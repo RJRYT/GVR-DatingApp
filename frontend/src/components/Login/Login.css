@@ -4,7 +4,7 @@
 */
 
 .login-form {
-    background: url("../../../assets/images/pattern/02.png") no-repeat 0 0;
+    background: url("../../assets/images/pattern/02.png") no-repeat 0 0;
     background-color: rgba(0, 0, 0, 0);
     background-origin: initial;
     background-position: center center;
@@ -46,7 +46,7 @@
 }
 
 .login-form-inner {
-    background: url("../../../assets/images/login-bg.png") no-repeat 0 0;
+    background: url("../../assets/images/login-bg.png") no-repeat 0 0;
     position: relative;
     background-size: cover;
     width: 100%;
@@ -71,7 +71,7 @@
     margin-left: -48px;
     width: 97px;
     height: 3px;
-    background: url("../../../assets/images/divider/bar2.png") no-repeat 0 0;
+    background: url("../../assets/images/divider/bar2.png") no-repeat 0 0;
 }
 
 .login-social li {

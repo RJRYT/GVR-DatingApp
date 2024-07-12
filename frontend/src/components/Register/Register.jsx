@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import axiosInstance from "../../../Instance/Axios";
+import axiosInstance from "../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
-import { AuthContext } from "../../../contexts/AuthContext";
+import { AuthContext } from "../../contexts/AuthContext";
 import Intro from "../Intro/Intro";
 import "./Register.css";
  

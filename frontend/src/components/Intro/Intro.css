@@ -7,7 +7,7 @@
     height: 350px;
     display: block;
     position: relative;
-    background-image: url("../../../assets/images/bg/inner-bg.jpg");
+    background-image: url("../../assets/images/bg/inner-bg.jpg");
     background-color:rgba(0, 0, 0, 0);
     background-origin: initial;
     background-position: center center;
@@ -105,7 +105,7 @@
     display: inline-block;
     left: 50%;
     margin-left: -118px;
-    background: url("../../../assets/images/divider/bar.png") no-repeat 0 0;
+    background: url("../../assets/images/divider/bar.png") no-repeat 0 0;
     width: 236px;
     height: 18px;
 }
