@@ -17,8 +17,13 @@ function Welcome() {
   });
   const navigate = useNavigate();
 
-  if (!localStorage.getItem("token") || localStorage.getItem("token") === "undefined")
-    navigate("/login");
+  useEffect(() => {
+    if (
+      !localStorage.getItem("token") ||
+      localStorage.getItem("token") === "undefined"
+    )
+      navigate("/login");
+  });
 
   useEffect(() => {
     const fetchRegistrationStatus = async () => {

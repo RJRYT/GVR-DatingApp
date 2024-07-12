@@ -9,12 +9,14 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUser = async()=> {
+        console.log("[AuthContext] Token: ", token);
         if (token && token !== 'undefined') {
           try {
             const res = await axiosInstance.get("/users/me");
-            console.log(res);
+            console.log("[AuthContext] User: ", res);
             setUser(res.data);
           } catch (err) {
+            console.log("[AuthContext] Error: ", err);
             setUser(null);
             localStorage.removeItem("token");
             setToken(null);

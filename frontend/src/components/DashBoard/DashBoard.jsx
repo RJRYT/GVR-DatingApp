@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -7,11 +7,13 @@ const DashBoard = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  if (
-    !localStorage.getItem("token") ||
-    localStorage.getItem("token") === "undefined"
-  )
-    navigate("/login");
+  useEffect(() => {
+    if (
+      !localStorage.getItem("token") ||
+      localStorage.getItem("token") === "undefined"
+    )
+      navigate("/login");
+  });
 
   return (
     <Container className="bg-white text-dark py-3 pb-5 text-center">

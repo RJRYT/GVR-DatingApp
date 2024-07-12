@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
@@ -20,11 +20,13 @@ const LoginPhone = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const isRegister = urlParams.get("register");
 
-  if (
-    localStorage.getItem("token") &&
-    localStorage.getItem("token") !== "undefined"
-  )
-    navigate("/login");
+  useEffect(() => {
+    if (
+      localStorage.getItem("token") &&
+      localStorage.getItem("token") !== "undefined"
+    )
+      navigate("/home");
+  });
 
   const handleSendOtp = async (e) => {
     const newErrors = {};
