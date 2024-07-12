@@ -9,6 +9,7 @@ import "./Welcome.css";
 
 function Welcome() {
   const [step, setStep] = useState(1);
+  const [purposeType, setpurposeType] = useState("");
   const [completedSteps, setCompletedSteps] = useState({
     personalInfoSubmitted: false,
     professionalInfoSubmitted: false,
@@ -27,6 +28,11 @@ function Welcome() {
         if (!res.data.personalInfoSubmitted) setStep(1);
         else if (!res.data.professionalInfoSubmitted) setStep(2);
         else if (!res.data.purposeSubmitted) setStep(3);
+        else{
+          navigate("/home/dating");
+          //Now im redirecting user to /home page. 
+          //Then we can check user's purpose(short term / long term) and redirect according to it.
+        }
       } catch (err) {
         console.error(err);
       }
@@ -45,8 +51,9 @@ function Welcome() {
 
   const handleComplete = () => {
     setCompletedSteps({ ...completedSteps, purposeSubmitted: true });
-    // Redirect to home
-    navigate("/home");
+    if (purposeType === "shortTermRelationShip") navigate("/home/dating"); //redirecting to dating app dashboard
+    //add others here
+    else navigate("/home");
   };
 
   return (
@@ -59,7 +66,7 @@ function Welcome() {
         <Section2 onNext={handleNextStep} />
       )}
       {step === 3 && !completedSteps.purposeSubmitted && (
-        <Section3 onComplete={handleComplete} />
+        <Section3 onComplete={handleComplete} setPurpose={setpurposeType} />
       )}
     </>
   );

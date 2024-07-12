@@ -1,12 +1,12 @@
 const User = require("../models").user;
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const path = require("path");
 const crypto = require("crypto");
 const fs = require("fs");
 
 exports.test = (req, res) => {
-  res.json({"message": "hello world from users"});
+  res.json({ message: "hello world from users" });
 };
 
 // Middleware to protect routes
@@ -24,23 +24,20 @@ exports.authMiddleware = (req, res, next) => {
   }
 };
 
-exports.CheckUser = async(req, res) => {
+exports.CheckUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select("-password");
     res.json(user);
   } catch (err) {
     console.error(err);
-    res.status(500).send('Server error');
+    res.status(500).send({ message: "Server Error" });
   }
 };
 
 // Configure multer for file uploads
 const profilePicStorage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(
-      null,
-      path.join(__dirname, "../uploads/profilePics")
-    );
+    cb(null, path.join(__dirname, "../uploads/profilePics"));
   },
   filename: function (req, file, cb) {
     const userId = req.user.id;
@@ -72,7 +69,7 @@ exports.uploadProfilePics = multer({ storage: profilePicStorage });
 
 exports.uploadReel = multer({ storage: reelStorage });
 
-exports.saveUploadedPics = async(req, res) =>{
+exports.saveUploadedPics = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
@@ -84,18 +81,16 @@ exports.saveUploadedPics = async(req, res) =>{
     });
 
     await user.save();
-    res
-      .status(200)
-      .json({
-        message: "Profile pictures uploaded successfully",
-        profilePics: user.profilePics,
-      });
+    res.status(200).json({
+      message: "Profile pictures uploaded successfully",
+      profilePics: user.profilePics,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
 
-exports.saveUploadedReel = async(req, res) =>{
+exports.saveUploadedReel = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     if (!user) {
@@ -104,18 +99,16 @@ exports.saveUploadedReel = async(req, res) =>{
 
     user.shortReel = { url: req.file.path };
     await user.save();
-    res
-      .status(200)
-      .json({
-        message: "Short reel uploaded successfully",
-        shortReel: user.shortReel,
-      });
+    res.status(200).json({
+      message: "Short reel uploaded successfully",
+      shortReel: user.shortReel,
+    });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
 
-exports.serveProfilePic = async(req, res) => {
+exports.serveProfilePic = async (req, res) => {
   const filePath = path.join(
     __dirname,
     "../uploads/profilePics",
@@ -129,7 +122,7 @@ exports.serveProfilePic = async(req, res) => {
   });
 };
 
-exports.serveShortReel = async(req, res) => {
+exports.serveShortReel = async (req, res) => {
   const filePath = path.join(
     __dirname,
     "../uploads/shortReels",
@@ -143,16 +136,18 @@ exports.serveShortReel = async(req, res) => {
   });
 };
 
-exports.updateUserPersonalDetails = async(req, res) => {
+exports.updateUserPersonalDetails = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
-    } else if (user.profileSectionOneDone){
-      return res.status(404).json({ message: "Personal details already added" });
+    } else if (user.personalInfoSubmitted) {
+      return res
+        .status(404)
+        .json({ message: "Personal details already added" });
     }
-    
+
     user.age = req.body.age;
     user.dob = req.body.dob;
     user.hobbies = req.body.hobbies;
@@ -164,10 +159,10 @@ exports.updateUserPersonalDetails = async(req, res) => {
 
     await user.save();
 
-    res.json({message: "Updated successfully",user});
+    res.json({ message: "Updated successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).send({ message: "Server Error" });
   }
 };
 
@@ -177,23 +172,34 @@ exports.updateUserProfessinalDetails = async (req, res) => {
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
-    } else if (user.profileSectionOneDone) {
+    } else if (user.professionalInfoSubmitted) {
       return res
         .status(404)
         .json({ message: "Professional details already added" });
     }
 
-    user.profession = req.body.profession;
-    user.company = req.body.company;
-    user.experience = req.body.experience;
-    user.professionalInfoSubmitted = true;
+    const formData = req.body;
+    if (
+      formData.professionType === "employee" ||
+      formData.professionType === "employer"
+    ) {
+      user.companyName = formData.companyName;
+      user.designation = formData.designation;
+      user.location = formData.location;
+      user.professionalInfoSubmitted = true;
+      user.professionType = formData.professionType;
+    } else if (formData.professionType === "jobseeker") {
+      user.expertiseLevel = formData.expertiseLevel;
+      user.professionalInfoSubmitted = true;
+      user.professionType = formData.professionType;
+    }
 
     await user.save();
 
-    res.json(user);
+    res.json({ message: "Updated successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).send({ message: "Server Error" });
   }
 };
 
@@ -204,9 +210,7 @@ exports.updateUserPurposeDetails = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     } else if (user.purposeSubmitted) {
-      return res
-        .status(404)
-        .json({ message: "purpose already added" });
+      return res.status(404).json({ message: "purpose already added" });
     }
 
     user.purpose = req.body.purpose;
@@ -214,14 +218,14 @@ exports.updateUserPurposeDetails = async (req, res) => {
 
     await user.save();
 
-    res.json(user);
+    res.json({ message: "Updated successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).send("Server Error");
+    res.status(500).send({ message: "Server Error"});
   }
 };
 
-exports.CheckRegistrationStatus = async(req, res) => {
+exports.CheckRegistrationStatus = async (req, res) => {
   const user = await User.findById(req.user.id);
 
   if (!user) {

@@ -36,6 +36,12 @@ module.exports = (mongoose) => {
       qualification: { type: String },
       profilePic: [ProfilePicSchema],
       shortReel: ShortReelSchema,
+      professionType: { type: String },
+      companyName: { type: String },
+      designation: { type: String },
+      location: { type: String },
+      expertiseLevel: { type: String },
+      purpose: { type: String },
     },
     { timestamps: true }
   );

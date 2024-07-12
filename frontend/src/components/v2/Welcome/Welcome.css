@@ -82,6 +82,38 @@
     cursor: pointer;
 }
 
+.register-1-form .field-widget .radio-group {
+    display: flex;
+    justify-content: space-evenly;
+    padding-bottom: 20px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.register-1-form .field-widget .radio-group label {
+    padding-left: 0%;
+    border: none;
+    border-bottom: none;
+}
+
+.register-1-form .field-widget .radio-group input[type="radio"] {
+    margin-right: 10px;
+    height: 25px;
+}
+
+.register-1-form .section-checkbox label {
+    padding-left: 0%;
+    border: none;
+    border-bottom: none;
+    text-align: start;
+}
+
+.register-1-form .field-widget input[type="checkbox"] {
+    margin-right: 10px;
+    height: 25px;
+    width: 20px;
+}
+
 .register-1-form .field-widget select {
     appearance: none;
 }
