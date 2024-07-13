@@ -20,10 +20,6 @@ module.exports = (app) => {
     usersController.saveUploadedReel
   );
 
-  router.get("/profilepics/:filename", usersController.serveProfilePic);
-
-  router.get("/shortreels/:filename", usersController.serveShortReel);
-
   router.post(
     "/update/personalinfo",
     usersController.authMiddleware,

@@ -1,9 +1,10 @@
 const User = require("../models").user;
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
+const multerS3 = require("multer-s3");
 const path = require("path");
 const crypto = require("crypto");
-const fs = require("fs");
+const s3Config = require("./../config/aws.config");
 
 exports.test = (req, res) => {
   res.json({ message: "hello world from users" });
@@ -34,40 +35,45 @@ exports.CheckUser = async (req, res) => {
   }
 };
 
-// Configure multer for file uploads
-const profilePicStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads/profilePics"));
-  },
-  filename: function (req, file, cb) {
-    const userId = req.user.id;
-    const randomString = crypto.randomBytes(6).toString("hex");
-    const currentDate = new Date().toISOString().replace(/:/g, "-"); // Format date to avoid issues with colons
-    const uniqueName = `profilepic_${userId}_${randomString}_${currentDate}${path.extname(
-      file.originalname
-    )}`;
-    cb(null, uniqueName);
-  },
+exports.uploadProfilePics = multer({
+  storage: multerS3({
+    s3: s3Config,
+    bucket: process.env.S3_BUCKET,
+    acl: "public-read",
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname, originalname: file.originalname });
+    },
+    key: function (req, file, cb) {
+      const userId = req.user.id;
+      const randomString = crypto.randomBytes(6).toString("hex");
+      const currentDate = new Date().toISOString().replace(/:/g, "-"); // Format date to avoid issues with colons
+      const uniqueName = `profilepics/${userId}_${randomString}_${currentDate}${path.extname(
+        file.originalname
+      )}`;
+      cb(null, uniqueName);
+    },
+  }),
 });
 
-const reelStorage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads/shortReels"));
-  },
-  filename: function (req, file, cb) {
-    const userId = req.user.id;
-    const randomString = crypto.randomBytes(6).toString("hex");
-    const currentDate = new Date().toISOString().replace(/:/g, "-"); // Format date to avoid issues with colons
-    const uniqueName = `reel_${userId}_${randomString}_${currentDate}${path.extname(
-      file.originalname
-    )}`;
-    cb(null, uniqueName);
-  },
+exports.uploadReel = multer({
+  storage: multerS3({
+    s3: s3Config,
+    bucket: process.env.S3_BUCKET,
+    acl: "public-read",
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname, originalname: file.originalname });
+    },
+    key: function (req, file, cb) {
+      const userId = req.user.id;
+      const randomString = crypto.randomBytes(6).toString("hex");
+      const currentDate = new Date().toISOString().replace(/:/g, "-"); // Format date to avoid issues with colons
+      const uniqueName = `shortreels/${userId}_${randomString}_${currentDate}${path.extname(
+        file.originalname
+      )}`;
+      cb(null, uniqueName);
+    },
+  }),
 });
-
-exports.uploadProfilePics = multer({ storage: profilePicStorage });
-
-exports.uploadReel = multer({ storage: reelStorage });
 
 exports.saveUploadedPics = async (req, res) => {
   try {
@@ -77,7 +83,7 @@ exports.saveUploadedPics = async (req, res) => {
     }
 
     req.files.forEach((file) => {
-      user.profilePic.push({ url: file.path });
+      user.profilePic.push({ url: file.location, key: file.key });
     });
 
     await user.save();
@@ -97,7 +103,7 @@ exports.saveUploadedReel = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.shortReel = { url: req.file.path };
+    user.shortReel = { url: req.file.location, key: req.file.key };
     await user.save();
     res.status(200).json({
       message: "Short reel uploaded successfully",
@@ -106,34 +112,6 @@ exports.saveUploadedReel = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
-};
-
-exports.serveProfilePic = async (req, res) => {
-  const filePath = path.join(
-    __dirname,
-    "../uploads/profilePics",
-    req.params.filename
-  );
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      return res.status(404).json({ message: "File not found" });
-    }
-    res.sendFile(filePath);
-  });
-};
-
-exports.serveShortReel = async (req, res) => {
-  const filePath = path.join(
-    __dirname,
-    "../uploads/shortReels",
-    req.params.filename
-  );
-  fs.access(filePath, fs.constants.F_OK, (err) => {
-    if (err) {
-      return res.status(404).json({ message: "File not found" });
-    }
-    res.sendFile(filePath);
-  });
 };
 
 exports.updateUserPersonalDetails = async (req, res) => {
@@ -221,7 +199,7 @@ exports.updateUserPurposeDetails = async (req, res) => {
     res.json({ message: "Updated successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).send({ message: "Server Error"});
+    res.status(500).send({ message: "Server Error" });
   }
 };
 

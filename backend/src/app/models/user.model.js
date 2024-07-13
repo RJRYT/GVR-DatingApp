@@ -3,11 +3,13 @@ module.exports = (mongoose) => {
 
   const ProfilePicSchema = mongoose.Schema({
     url: { type: String, reqired: true },
+    key: { type: String, reqired: true },
     uploadedAt: { type: Date, default: Date.now },
   });
 
   const ShortReelSchema = mongoose.Schema({
     url: { type: String, reqired: true },
+    key: { type: String, reqired: true },
     uploadedAt: { type: Date, default: Date.now },
   });
   
