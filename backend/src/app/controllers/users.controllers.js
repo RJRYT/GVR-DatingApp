@@ -16,7 +16,7 @@ exports.test = (req, res) => {
 
 // Middleware to protect routes
 exports.authMiddleware = (req, res, next) => {
-  const token = req.cookies.accessToken;
+  const token = req.header("x-auth-token") || req.cookies.accessToken;
   if (!token)
     return res.status(401).json({ message: "No token, authorization denied" });
 
@@ -30,7 +30,7 @@ exports.authMiddleware = (req, res, next) => {
 };
 
 exports.RefreshToken = async (req, res) => {
-  const refreshToken = req.cookies.refreshToken;
+  const refreshToken = req.body.refreshToken || req.cookies.refreshToken;
   if (!refreshToken) {
     return res.status(403).json({ message: "Refresh token not found" });
   }
