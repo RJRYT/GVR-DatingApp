@@ -1,15 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./Upload.css";
+import { AuthContext } from "../../../../contexts/AuthContext";
 
-function ImageUpload({ setUpload, Uploading, Error }) {
+function ImageUpload({ setUpload, Uploading, Error, UploadStatus, SetUploadStatus }) {
   const [imagePreviews, setImagePreviews] = useState([]);
+  const { authState } = useContext(AuthContext);
+
+  useEffect(()=> {
+    if (
+      authState.isAuthenticated &&
+      authState.user &&
+      authState.user.profilePic
+    ) {
+      const previews = authState.user.profilePic.map((file) =>file.url);
+      setImagePreviews(previews);
+      SetUploadStatus(true);
+    }
+  },[]);
 
   const handleImageUpload = (event) => {
     const files = Array.from(event.target.files);
     const previews = files.map((file) => URL.createObjectURL(file));
     setImagePreviews(previews);
-    if(window.confirm("Are you sure to upload profile images ?")){
+    if (window.confirm("Are you sure to upload profile images ?")) {
       setUpload(files);
+    }
+  };
+
+  const fileUploadClick = (e) => {
+    // eslint-disable-next-line no-restricted-globals
+    if (UploadStatus && !confirm("The images are already uploaded. Do you want to update it ?")) {
+      e.preventDefault();
     }
   };
 
@@ -25,6 +46,7 @@ function ImageUpload({ setUpload, Uploading, Error }) {
           hidden
           multiple
           disabled={Uploading}
+          onClick={fileUploadClick}
         />
         <label htmlFor="imageUpload" className="text-start">
           Upload Profile picture

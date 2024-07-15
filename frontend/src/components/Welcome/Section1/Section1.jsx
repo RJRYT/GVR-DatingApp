@@ -351,6 +351,8 @@ function Section1({ onNext }) {
                     setUpload={handleProfilePicSubmit}
                     Uploading={isUploading}
                     Error={errors}
+                    UploadStatus={profilePicsUploaded}
+                    SetUploadStatus={setProfilePicsUploaded}
                   />
                 </div>
                 <div className="section-field mb-3">
@@ -358,6 +360,8 @@ function Section1({ onNext }) {
                     setUpload={handleShortReelSubmit}
                     Uploading={isUploading}
                     Error={errors}
+                    UploadStatus={shortReelUploaded}
+                    SetUploadStatus={setShortReelUploaded}
                   />
                 </div>
                 <div className="clearfix"></div>

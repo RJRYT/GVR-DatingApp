@@ -1,8 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./Upload.css";
+import { AuthContext } from "../../../../contexts/AuthContext";
+ 
 
-function ReelUpload({ setUpload, Uploading, Error }) {
+function ReelUpload({ setUpload, Uploading, Error, UploadStatus, SetUploadStatus }) {
   const [videoPreview, setVideoPreview] = useState(null);
+  const { authState } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (
+      authState.isAuthenticated &&
+      authState.user &&
+      authState.user.shortReel
+    ) {
+      setVideoPreview(authState.user.shortReel.url);
+      SetUploadStatus(true);
+    }
+  }, []);
 
   const handleVideoUpload = (event) => {
     const file = event.target.files[0];
@@ -12,6 +26,13 @@ function ReelUpload({ setUpload, Uploading, Error }) {
       if (window.confirm("Are you sure to upload this short reel ?")) {
         setUpload(file);
       }
+    }
+  };
+
+  const fileUploadClick = (e) => {
+    // eslint-disable-next-line no-restricted-globals
+    if (UploadStatus && !confirm("The reel is already uploaded. Do you want to update it ?")) {
+      e.preventDefault();
     }
   };
 
@@ -26,6 +47,7 @@ function ReelUpload({ setUpload, Uploading, Error }) {
           onChange={handleVideoUpload}
           hidden
           disabled={Uploading}
+          onClick={fileUploadClick}
         />
         <label htmlFor="videoUpload" className="text-start">
           Select Short Reel
