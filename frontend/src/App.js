@@ -2,6 +2,8 @@ import React from "react";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 import Layout from "./components/layout/Layout";
 import Home from "./components/Home/Home";
 import DashBoard from "./components/DashBoard/DashBoard";
@@ -15,6 +17,7 @@ import { AuthProvider } from "./contexts/AuthContext";
 function App() {
   return (
     <AuthProvider>
+      <ToastContainer newestOnTop={true} theme="colored" />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>

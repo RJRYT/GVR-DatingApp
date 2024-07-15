@@ -6,6 +6,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import Loading from "../Loading/Loading";
 import Intro from "../Intro/Intro";
 import "./Register.css";
+import { toast } from "react-toastify";
  
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -82,10 +83,10 @@ const Register = () => {
         await axiosInstance.post("/auth/email/register", formData);
         checkAuthStatus();
         navigate("/welcome");
-        alert("Registration Success");
+        toast.success("Registration Success");
       } catch (err) {
         console.error(err);
-        alert(
+        toast.error(
           err.response?.data.message || "Something Broken..! Try again later"
         );
       } finally {

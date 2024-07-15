@@ -5,6 +5,7 @@ import ImageUpload from "./Upload/ImageUpload";
 import ReelUpload from "./Upload/ReelUpload";
 import Modal from "react-bootstrap/Modal";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import { toast } from "react-toastify";
 
 function Section1({ onNext }) {
   const [formData, setFormData] = useState({
@@ -104,10 +105,11 @@ function Section1({ onNext }) {
           },
         }
       );
+      toast.success("Profile pics Uploaded");
       setProfilePicsUploaded(true);
     } catch (err) {
       console.error(err);
-      alert(
+      toast.error(
         err.response?.data.message || "Something Broken..! Try again later"
       );
     } finally {
@@ -137,9 +139,10 @@ function Section1({ onNext }) {
         }
       );
       setShortReelUploaded(true);
+      toast.success("Short reel Uploaded");
     } catch (err) {
       console.error(err);
-      alert(
+      toast.error(
         err.response?.data.message || "Something Broken..! Try again later"
       );
     } finally {
@@ -155,9 +158,10 @@ function Section1({ onNext }) {
       try {
         await axiosInstance.post("/users/update/personalinfo", formData);
         onNext();
+        toast.success("Section Completed.");
       } catch (err) {
         console.error(err);
-        alert(
+        toast.error(
           err.response?.data.message || "Something Broken..! Try again later"
         );
       } finally {

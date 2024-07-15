@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 import Loading from "../Loading/Loading";
 import Intro from "../Intro/Intro";
 import "./Login.css";
@@ -42,10 +43,11 @@ const LoginPhone = () => {
         await axiosInstance.post("/auth/number/sendotp", {
           phoneNumber: formData.phoneNumber,
         });
+        toast.success("OTP is send to given number");
         setIsOtpSent(true);
       } catch (err) {
         console.error(err);
-        alert(
+        toast.error(
           err.response?.data.message || "Something Broken..! Try again later"
         );
       } finally {
@@ -90,10 +92,11 @@ const LoginPhone = () => {
           otp: formData.otp,
         });
         checkAuthStatus();
+        toast.success("OTP Verified");
         navigate("/welcome");
       } catch (err) {
         console.error(err);
-        alert(
+        toast.error(
           err.response?.data.message || "Something Broken..! Try again later"
         );
       } finally {

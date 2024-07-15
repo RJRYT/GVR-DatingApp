@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../contexts/AuthContext";
+import { toast } from "react-toastify";
 import Loading from "../Loading/Loading";
 import Intro from "../Intro/Intro";
 import "./Login.css";
@@ -56,10 +57,11 @@ const Login = () => {
       try {
         await axiosInstance.post("/auth/email/login", formData);
         checkAuthStatus();
+        toast.success("Login Success");
         navigate("/welcome");
       } catch (err) {
         console.error(err);
-        alert(
+        toast.error(
           err.response?.data.message || "Something Broken..! Try again later"
         );
       } finally {

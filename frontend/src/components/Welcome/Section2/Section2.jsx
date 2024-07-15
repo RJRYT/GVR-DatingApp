@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axiosInstance from "../../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 function Section2({ onNext }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -61,9 +62,10 @@ function Section2({ onNext }) {
       try {
         await axiosInstance.post("/users/update/professionalinfo", formData);
         onNext();
+        toast.success("Section Completed");
       } catch (err) {
         console.error(err);
-        alert(
+        toast.error(
           err.response?.data.message || "Something Broken..! Try again later"
         );
       } finally {

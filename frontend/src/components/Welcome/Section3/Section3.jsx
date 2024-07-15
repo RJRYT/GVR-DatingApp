@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axiosInstance from "../../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
+import { toast } from "react-toastify";
 
 function Section3({ onComplete, setPurpose }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -42,9 +43,11 @@ function Section3({ onComplete, setPurpose }) {
         await axiosInstance.post("/users/update/purpose", formData);
         setPurpose(formData.purpose);
         onComplete();
+        toast.success("Done. Registration complete");
+        toast.info("Start Descovering your matches...");
       } catch (err) {
         console.error(err);
-        alert(
+        toast.error(
           err.response?.data.message || "Something Broken..! Try again later"
         );
       } finally {

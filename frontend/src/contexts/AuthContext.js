@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback } from "react";
 import axiosInstance from "../Instance/Axios";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }) => {
       window.history.location = "/login";
       setAuthState({ isAuthenticated: false, user: null });
       console.log("user logout completed");
+      toast.warning("Logout completed");
     } catch (error) {
       console.error("Logout failed", error);
     }
