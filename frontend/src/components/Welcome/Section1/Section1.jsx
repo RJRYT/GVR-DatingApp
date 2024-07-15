@@ -3,8 +3,6 @@ import axiosInstance from "../../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
 import ImageUpload from "./Upload/ImageUpload";
 import ReelUpload from "./Upload/ReelUpload";
-import Modal from "react-bootstrap/Modal";
-import ProgressBar from "react-bootstrap/ProgressBar";
 import { toast } from "react-toastify";
 
 function Section1({ onNext }) {
@@ -22,7 +20,6 @@ function Section1({ onNext }) {
   const [shortReelUploaded, setShortReelUploaded] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
-  const [uploadProgress, setUploadProgress] = useState(0);
   const [isUploading, setIsUploading] = useState(false);
 
   const validateForm = () => {
@@ -84,28 +81,49 @@ function Section1({ onNext }) {
   };
 
   const handleProfilePicSubmit = async (profilePics) => {
+    if(profilePics.length > 5){
+      toast.error("You can only choose upto 5 images");
+      return;
+    }
     const formData = new FormData();
     for (let i = 0; i < profilePics.length; i++) {
       formData.append("profilePics", profilePics[i]);
     }
     setIsUploading(true);
     try {
+      const uploadToastId = toast.info("Profile Pics upload started", {
+        autoClose: false,
+      });
       await axiosInstance.post(
         "/users/upload/profilepics",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
-        },
-        {
           onUploadProgress: (progressEvent) => {
             const progress = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total
             );
-            setUploadProgress(progress);
+            if (progress === 100) {
+              toast.update(uploadToastId, {
+                render: `Processing...`,
+                type: "info",
+                autoClose: false,
+              });
+            } else {
+              toast.update(uploadToastId, {
+                render: `Upload progress: ${progress}%`,
+                type: "info",
+                autoClose: false,
+              });
+            }
           },
         }
       );
-      toast.success("Profile pics Uploaded");
+      toast.update(uploadToastId, {
+        render: "Profile Pics upload completed",
+        type: "success",
+        autoClose: 3000,
+      });
       setProfilePicsUploaded(true);
     } catch (err) {
       console.error(err);
@@ -114,7 +132,6 @@ function Section1({ onNext }) {
       );
     } finally {
       setIsUploading(false);
-      setUploadProgress(0);
     }
   };
 
@@ -123,23 +140,36 @@ function Section1({ onNext }) {
     formData.append("shortReel", shortReel);
     setIsUploading(true);
     try {
-      await axiosInstance.post(
-        "/users/upload/shortreel",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
+      const uploadToastId = toast.info("Short reel upload started", {
+        autoClose: false,
+      });
+      await axiosInstance.post("/users/upload/shortreel", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          if (progress === 100) {
+            toast.update(uploadToastId, {
+              render: `Processing...`,
+              type: "info",
+              autoClose: false,
+            });
+          } else {
+            toast.update(uploadToastId, {
+              render: `Upload progress: ${progress}%`,
+              type: "info",
+              autoClose: false,
+            });
+          }
         },
-        {
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            setUploadProgress(progress);
-          },
-        }
-      );
+      });
       setShortReelUploaded(true);
-      toast.success("Short reel Uploaded");
+      toast.update(uploadToastId, {
+        render: "Profile Pics upload completed",
+        type: "success",
+        autoClose: 3000,
+      });
     } catch (err) {
       console.error(err);
       toast.error(
@@ -147,7 +177,6 @@ function Section1({ onNext }) {
       );
     } finally {
       setIsUploading(false);
-      setUploadProgress(0);
     }
   };
 
@@ -345,18 +374,6 @@ function Section1({ onNext }) {
                   </button>
                 </div>
               </form>
-              <Modal show={isUploading}>
-                <Modal.Header>
-                  <Modal.Title>Uploading...</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  <ProgressBar
-                    animated
-                    now={uploadProgress}
-                    label={`${uploadProgress}%`}
-                  />
-                </Modal.Body>
-              </Modal>
             </div>
           </Col>
         </Row>
