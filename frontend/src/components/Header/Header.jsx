@@ -6,21 +6,29 @@ import { AuthContext } from "../../contexts/AuthContext";
 import "./Header.css";
 
 function Header() {
-  const { user, logout } = useContext(AuthContext);
+  const { authState, logout } = useContext(AuthContext);
   return (
     <Navbar bg="dark" expand="lg">
       <Container className="py-1">
-        <Navbar.Brand as={Link} to="/home" className="colorwhite" style={{fontSize: "30px"}}>
+        <Navbar.Brand
+          as={Link}
+          to="/home"
+          className="colorwhite"
+          style={{ fontSize: "30px" }}
+        >
           Dating App
         </Navbar.Brand>
         <Navbar.Toggle
           aria-controls="basic-navbar-nav"
           className="togglebutton"
         />
-        <Navbar.Collapse id="basic-navbar-nav" className="align-items-center justify-content-end">
+        <Navbar.Collapse
+          id="basic-navbar-nav"
+          className="align-items-center justify-content-end"
+        >
           <Nav className="ml-auto">
             <LinkContainer to="/home">Dashboard</LinkContainer>
-            {!user ? (
+            {!authState.isAuthenticated ? (
               <>
                 <LinkContainer to="/login">Login</LinkContainer>
                 <LinkContainer to="/register">Register</LinkContainer>

@@ -1,49 +1,32 @@
 import React, { useEffect, useContext } from "react";
-import axiosInstance from "../../Instance/Axios";
-import { useNavigate } from "react-router-dom";
 import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../contexts/AuthContext";
+import AccessDenied from "../AccessDenied/AccessDenied";
+import Loading from "../Loading/Loading";
 
 const Home = () => {
-  const { user, login, addToken } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { authState, checkAuthStatus, loading } = useContext(AuthContext);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get("token");
-      if (token) {
-        console.log("[Google OAuth] Token: ", token);
-        addToken(token);
-        try {
-          const res = await axiosInstance.get("/users/me");
-          console.log("[Google OAuth] User: ", res.data);
-          login(res.data);
-          navigate("/welcome");
-        } catch (err) {
-          console.log("[Google OAuth] Error: ", err);
-          navigate("/login");
-        }
-      } else {
-        if (
-          !localStorage.getItem("token") ||
-          localStorage.getItem("token") === "undefined"
-        )
-          navigate("/login");
-      }
-    };
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    if (token) {
+      checkAuthStatus();
+    }
+  }, []);
 
-    fetchUser();
-  });
+  if (loading) return <Loading />;
+
+  if (!loading && !authState.isAuthenticated) return <AccessDenied />;
 
   return (
     <Container className="bg-white text-dark py-3 pb-5 text-center">
       <Row className="justify-content-center">
         <Col xs={12} md={6}>
           <h2 className="text-dark fa-4x">Default Dashboard</h2>
-          {user ? (
+          {authState.user ? (
             <div>
-              <h3 className="text-dark">Welcome, {user.username}</h3>
+              <h3 className="text-dark">Welcome, {authState.user.username}</h3>
             </div>
           ) : (
             <p className="text-dark">Loading...</p>

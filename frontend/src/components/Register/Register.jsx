@@ -3,6 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../contexts/AuthContext";
+import Loading from "../Loading/Loading";
 import Intro from "../Intro/Intro";
 import "./Register.css";
  
@@ -17,15 +18,11 @@ const Register = () => {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
-  const { addToken } = useContext(AuthContext);
+  const { authState, checkAuthStatus, loading } = useContext(AuthContext);
 
   useEffect(() => {
-    if (
-      localStorage.getItem("token") &&
-      localStorage.getItem("token") !== "undefined"
-    )
-      navigate("/home");
-  });
+    if (!loading && authState.isAuthenticated) navigate("/welcome");
+  }, []);
 
   const validateForm = () => {
     const newErrors = {};
@@ -82,8 +79,8 @@ const Register = () => {
     if (validateForm()) {
       setIsSubmitting(true);
       try {
-        const res = await axiosInstance.post("/auth/email/register", formData);
-        addToken(res.data.token);
+        await axiosInstance.post("/auth/email/register", formData);
+        checkAuthStatus();
         navigate("/welcome");
         alert("Registration Success");
       } catch (err) {
@@ -96,6 +93,8 @@ const Register = () => {
       }
     }
   };
+
+  if (loading) return <Loading />;
 
   return (
     <>

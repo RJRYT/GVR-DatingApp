@@ -1,28 +1,24 @@
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../contexts/AuthContext";
+import AccessDenied from "../AccessDenied/AccessDenied";
+import Loading from "../Loading/Loading";
 
 const DashBoard = () => {
-  const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const { authState, loading } = useContext(AuthContext);
 
-  useEffect(() => {
-    if (
-      !localStorage.getItem("token") ||
-      localStorage.getItem("token") === "undefined"
-    )
-      navigate("/login");
-  });
+  if (loading) return <Loading />;
+  
+  if (!loading && !authState.isAuthenticated) return <AccessDenied />;
 
   return (
     <Container className="bg-white text-dark py-3 pb-5 text-center">
       <Row className="justify-content-center">
         <Col xs={12} md={6}>
           <h2 className="text-dark fa-4x">Dating Dashboard</h2>
-          {user ? (
+          {authState.user ? (
             <div>
-              <h3 className="text-dark">Welcome, {user.username}</h3>
+              <h3 className="text-dark">Welcome, {authState.user.username}</h3>
             </div>
           ) : (
             <p className="text-dark">Loading...</p>

@@ -1,20 +1,30 @@
 import axios from "axios";
 
-const axiosInstance = axios.create({
+const apiInstance = axios.create({
   baseURL: process.env.REACT_APP_API_URL + "/api", // Your API base URL
+  withCredentials: true,
 });
 
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      config.headers["x-auth-token"] = token;
+apiInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+
+    if (error.response.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const response = await apiInstance.post("/users/token");
+        if (response.status === 200) {
+          return apiInstance(originalRequest);
+        }
+      } catch (err) {
+        return Promise.reject(err);
+      }
     }
-    return config;
-  },
-  (error) => {
+
     return Promise.reject(error);
   }
 );
 
-export default axiosInstance;
+export default apiInstance;

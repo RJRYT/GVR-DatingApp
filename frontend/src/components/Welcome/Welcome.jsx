@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axiosInstance from "../../Instance/Axios";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../contexts/AuthContext";
 import Intro from "../Intro/Intro";
 import Section1 from "./Section1/Section1";
 import Section2 from "./Section2/Section2";
 import Section3 from "./Section3/Section3";
+import AccessDenied from "../AccessDenied/AccessDenied";
+import Loading from "../Loading/Loading";
 import "./Welcome.css";
 
 function Welcome() {
+  const { authState, loading } = useContext(AuthContext);
   const [step, setStep] = useState(1);
   const [purposeType, setpurposeType] = useState("");
   const [completedSteps, setCompletedSteps] = useState({
@@ -16,14 +20,6 @@ function Welcome() {
     purposeSubmitted: false,
   });
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (
-      !localStorage.getItem("token") ||
-      localStorage.getItem("token") === "undefined"
-    )
-      navigate("/login");
-  });
 
   useEffect(() => {
     const fetchRegistrationStatus = async () => {
@@ -43,7 +39,7 @@ function Welcome() {
       }
     };
     fetchRegistrationStatus();
-  },[navigate]);
+  },[]);
 
   const handleNextStep = () => {
     if (step === 1) {
@@ -60,6 +56,10 @@ function Welcome() {
     //add others here
     else navigate("/home");
   };
+
+  if (loading) return <Loading />;
+
+  if (!loading && !authState.isAuthenticated) return <AccessDenied />;
 
   return (
     <>
