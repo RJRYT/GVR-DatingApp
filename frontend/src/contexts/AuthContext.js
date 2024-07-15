@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await axiosInstance.post("/auth/logout");
-      // Redirect to login page or home page
+      window.history.location = "/login";
       setAuthState({ isAuthenticated: false, user: null });
       console.log("user logout completed");
     } catch (error) {

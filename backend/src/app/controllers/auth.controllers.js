@@ -139,7 +139,6 @@ exports.VerifyCode = async (req, res) => {
       .services(process.env.TWILIO_SERVICE_SID)
       .verificationChecks.create({ to: `+91${phoneNumber}`, code: otp })
       .then(async (verification_check) => {
-        console.log(verification_check);
         if (verification_check.status) {
           const AccessToken = generateAccessToken({ id: user.id });
           const RefreshToken = generateRefreshToken({ id: user.id });

@@ -74,7 +74,7 @@ const LoginPhone = () => {
   const handleVerifyOtp = async (e) => {
     e.preventDefault();
     const newErrors = {};
-    const validOTP = new RegExp("^[0-9]{10}$");
+    const validOTP = new RegExp("^[0-9]{6}$");
     if (!formData.phoneNumber) {
       newErrors.otp = "OTP is required";
       setErrors(newErrors);
