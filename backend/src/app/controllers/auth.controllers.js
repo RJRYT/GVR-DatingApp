@@ -47,6 +47,12 @@ exports.doLogin = async (req, res) => {
   }
 };
 
+exports.doLogout = async(req, res) => {
+  res.clearCookie("accessToken");
+  res.clearCookie("refreshToken");
+  res.json({ message: "Logout successful" });
+};
+
 exports.doRegister = async (req, res) => {
   const { username, email, password, phoneNumber } = req.body;
   try {

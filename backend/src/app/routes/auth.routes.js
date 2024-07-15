@@ -9,6 +9,9 @@ module.exports = (app) => {
   router.post("/email/login", authController.doLogin);
   router.post("/email/register", authController.doRegister);
 
+  //Logout
+  router.post("/logout", authController.doLogout);
+
   // Google Authentication
   router.get("/google/login", authController.GoogleLogin);
   router.get("/google/callback", authController.PassportVerify , authController.GoogleCallBack);
