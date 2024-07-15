@@ -5,6 +5,7 @@ module.exports = (app) => {
 
   router.get("/", usersController.test);
   router.get("/me", usersController.authMiddleware, usersController.CheckUser);
+  router.post("/token", usersController.RefreshToken);
 
   router.post(
     "/upload/profilepics",

@@ -1,6 +1,9 @@
 const passport = require("passport");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../config/token.config");
 
 const twilio = require("twilio");
 const client = new twilio(
@@ -21,19 +24,29 @@ exports.doLogin = async (req, res) => {
     if (!user) return res.status(400).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(400).json({ message: "Invalid credentials" });
 
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: 3600,
+    const AccessToken = generateAccessToken({ id: user.id });
+    const RefreshToken = generateRefreshToken({ id: user.id });
+
+    res.cookie("accessToken", AccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
     });
 
-    res.json({ token });
+    res.cookie("refreshToken", RefreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    res.json({ AccessToken });
   } catch (err) {
     console.error(err);
-    res.status(500).json({message:"Server error"});
+    res.status(500).json({ message: "Server error" });
   }
 };
- 
+
 exports.doRegister = async (req, res) => {
   const { username, email, password, phoneNumber } = req.body;
   try {
@@ -42,13 +55,22 @@ exports.doRegister = async (req, res) => {
 
     user = new User({ username, email, password, phoneNumber });
     await user.save();
-    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-      expiresIn: 3600,
+    const AccessToken = generateAccessToken({ id: user.id });
+    const RefreshToken = generateRefreshToken({ id: user.id });
+
+    res.cookie("accessToken", AccessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
     });
-    res.json({ token });
+
+    res.cookie("refreshToken", RefreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+    res.json({ AccessToken });
   } catch (err) {
     console.error(err);
-    res.status(500).json({message:"Server error"});
+    res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -57,17 +79,26 @@ exports.GoogleLogin = passport.authenticate("google", {
 });
 
 exports.PassportVerify = passport.authenticate("google", {
-  failureRedirect: process.env.FRONTEND_URL+"/home?error=GoogleOAuthFailed",
+  failureRedirect: process.env.FRONTEND_URL + "/home?error=GoogleOAuthFailed",
 });
 
 exports.GoogleCallBack = (req, res) => {
-  const token = jwt.sign({ id: req.user.id }, process.env.JWT_SECRET, {
-    expiresIn: 3600,
+  const AccessToken = generateAccessToken({ id: req.user.id });
+  const RefreshToken = generateRefreshToken({ id: req.user.id });
+
+  res.cookie("accessToken", AccessToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
   });
-  res.redirect(`${process.env.FRONTEND_URL}/home?token=${token}`);
+
+  res.cookie("refreshToken", RefreshToken, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+  });
+  res.redirect(`${process.env.FRONTEND_URL}/home?token=${AccessToken}`);
 };
 
-exports.SendCode = async(req, res) => {
+exports.SendCode = async (req, res) => {
   const { phoneNumber } = req.body;
 
   let user = await User.findOne({ phoneNumber });
@@ -92,7 +123,7 @@ exports.SendCode = async(req, res) => {
   }
 };
 
-exports.VerifyCode = async(req, res) => {
+exports.VerifyCode = async (req, res) => {
   const { phoneNumber, otp } = req.body;
 
   const user = await User.findOne({ phoneNumber });
@@ -101,15 +132,24 @@ exports.VerifyCode = async(req, res) => {
     client.verify.v2
       .services(process.env.TWILIO_SERVICE_SID)
       .verificationChecks.create({ to: `+91${phoneNumber}`, code: otp })
-      .then(async(verification_check) => {
+      .then(async (verification_check) => {
         console.log(verification_check);
         if (verification_check.status) {
-          const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-            expiresIn: 3600,
+          const AccessToken = generateAccessToken({ id: user.id });
+          const RefreshToken = generateRefreshToken({ id: user.id });
+
+          res.cookie("accessToken", AccessToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+          });
+
+          res.cookie("refreshToken", RefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
           });
           user.numberVerified = true;
           await user.save();
-          res.status(200).send({ token });
+          res.status(200).send({ AccessToken });
         }
       });
   } else {

@@ -5,6 +5,10 @@ const multerS3 = require("multer-s3");
 const path = require("path");
 const crypto = require("crypto");
 const s3Config = require("./../config/aws.config");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../config/token.config");
 
 exports.test = (req, res) => {
   res.json({ message: "hello world from users" });
@@ -12,17 +16,36 @@ exports.test = (req, res) => {
 
 // Middleware to protect routes
 exports.authMiddleware = (req, res, next) => {
-  const token = req.header("x-auth-token");
+  const token = req.cookies.accessToken;
   if (!token)
-    return res.status(401).json({ msg: "No token, authorization denied" });
+    return res.status(401).json({ message: "No token, authorization denied" });
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_ACCESS_TOKEN_SECRET);
     req.user = decoded;
     next();
   } catch (err) {
-    res.status(401).json({ msg: "Token is not valid" });
+    res.status(401).json({ message: "Token is not valid" });
   }
+};
+
+exports.RefreshToken = async (req, res) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    return res.status(403).json({ message: "Refresh token not found" });
+  }
+
+  jwt.verify(refreshToken, JWT_REFRESH_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+
+    const accessToken = generateAccessToken({ id: user.id });
+    res.cookie("accessToken", accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+    });
+
+    res.json({ accessToken });
+  });
 };
 
 exports.CheckUser = async (req, res) => {
