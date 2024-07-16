@@ -6,10 +6,7 @@ const path = require("path");
 const crypto = require("crypto");
 const s3Config = require("./../config/aws.config");
 const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
-const {
-  generateAccessToken,
-  generateRefreshToken,
-} = require("../config/token.config");
+const { generateAccessToken } = require("../config/token.config");
 
 exports.test = (req, res) => {
   res.json({ message: "hello world from users" });
@@ -36,17 +33,21 @@ exports.RefreshToken = async (req, res) => {
     return res.status(403).json({ message: "Refresh token not found" });
   }
 
-  jwt.verify(refreshToken, JWT_REFRESH_TOKEN_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
+  jwt.verify(
+    refreshToken,
+    process.env.JWT_REFRESH_TOKEN_SECRET,
+    (err, user) => {
+      if (err) return res.sendStatus(403);
 
-    const accessToken = generateAccessToken({ id: user.id });
-    res.cookie("accessToken", accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-    });
+      const accessToken = generateAccessToken({ id: user.id });
+      res.cookie("accessToken", accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+      });
 
-    res.json({ accessToken });
-  });
+      res.json({ accessToken });
+    }
+  );
 };
 
 exports.CheckUser = async (req, res) => {
@@ -105,7 +106,7 @@ exports.saveUploadedPics = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-    
+
     if (user.personalInfoSubmitted) {
       return res
         .status(400)
