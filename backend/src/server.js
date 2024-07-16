@@ -5,7 +5,10 @@ const passport = require("passport");
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const cron = require("node-cron");
 const morgan = require("morgan");
+
+const cleanupUnusedFiles = require("./app/helpers/CleanupFiles");
 
 const app = express();
 
@@ -57,10 +60,10 @@ db.mongoose
     useUnifiedTopology: true,
   })
   .then(() => {
-    console.log("Connected to the database!");
+    console.log("[Database]:Connected to the database!");
   })
   .catch((err) => {
-    console.log("Cannot connect to the database!", err);
+    console.log("[Database]:Cannot connect to the database!", err);
     process.exit();
   });
 
@@ -97,8 +100,14 @@ process.on("uncaughtException", (err, origin) => {
   console.log(`${err.stack}, ${origin}`);
 });
 
+// Schedule the cleanup to run daily at midnight
+cron.schedule('0 0 * * *', () => {
+  console.log('[Corn Job]:Corn job triggered...');
+  cleanupUnusedFiles();
+});
+
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
+  console.log(`[Server]:Server is running on port ${PORT}.`);
 });

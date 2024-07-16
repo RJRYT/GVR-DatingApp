@@ -90,10 +90,10 @@ function Section1({ onNext }) {
       formData.append("profilePics", profilePics[i]);
     }
     setIsUploading(true);
+    const uploadToastId = toast.info("Profile Pics upload started", {
+      autoClose: false,
+    });
     try {
-      const uploadToastId = toast.info("Profile Pics upload started", {
-        autoClose: false,
-      });
       await axiosInstance.post(
         "/users/upload/profilepics",
         formData,
@@ -127,9 +127,12 @@ function Section1({ onNext }) {
       setProfilePicsUploaded(true);
     } catch (err) {
       console.error(err);
-      toast.error(
-        err.response?.data.message || "Something Broken..! Try again later"
-      );
+      toast.update(uploadToastId, {
+        render:
+          err.response?.data.message || "Something Broken..! Try again later",
+        type: "error",
+        autoClose: 3000,
+      });
     } finally {
       setIsUploading(false);
     }
@@ -139,10 +142,10 @@ function Section1({ onNext }) {
     const formData = new FormData();
     formData.append("shortReel", shortReel);
     setIsUploading(true);
+    const uploadToastId = toast.info("Short reel upload started", {
+      autoClose: false,
+    });
     try {
-      const uploadToastId = toast.info("Short reel upload started", {
-        autoClose: false,
-      });
       await axiosInstance.post("/users/upload/shortreel", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         onUploadProgress: (progressEvent) => {
@@ -166,15 +169,18 @@ function Section1({ onNext }) {
       });
       setShortReelUploaded(true);
       toast.update(uploadToastId, {
-        render: "Profile Pics upload completed",
+        render: "Short reel upload completed",
         type: "success",
         autoClose: 3000,
       });
     } catch (err) {
       console.error(err);
-      toast.error(
-        err.response?.data.message || "Something Broken..! Try again later"
-      );
+      toast.update(uploadToastId, {
+        render:
+          err.response?.data.message || "Something Broken..! Try again later",
+        type: "error",
+        autoClose: 3000,
+      });
     } finally {
       setIsUploading(false);
     }

@@ -5,6 +5,7 @@ const multerS3 = require("multer-s3");
 const path = require("path");
 const crypto = require("crypto");
 const s3Config = require("./../config/aws.config");
+const { DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const {
   generateAccessToken,
   generateRefreshToken,
@@ -104,10 +105,24 @@ exports.saveUploadedPics = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+    
+    if (user.personalInfoSubmitted) {
+      return res
+        .status(400)
+        .json({ message: "Personal section already completed." });
+    }
 
-    req.files.forEach((file) => {
-      user.profilePic.push({ url: file.location, key: file.key });
-    });
+    if (user.profilePic.length > 0) {
+      for (const pic of user.profilePic) {
+        const params = { Bucket: process.env.S3_BUCKET, Key: pic.key };
+        await s3Config.send(new DeleteObjectCommand(params));
+      }
+    }
+
+    user.profilePic = req.files.map((file) => ({
+      url: file.location,
+      key: file.key,
+    }));
 
     await user.save();
     res.status(200).json({
@@ -124,6 +139,20 @@ exports.saveUploadedReel = async (req, res) => {
     const user = await User.findById(req.user.id);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.personalInfoSubmitted) {
+      return res
+        .status(400)
+        .json({ message: "Personal section already completed." });
+    }
+
+    if (user.shortReel) {
+      const params = {
+        Bucket: process.env.S3_BUCKET,
+        Key: user.shortReel.key,
+      };
+      await s3Config.send(new DeleteObjectCommand(params));
     }
 
     user.shortReel = { url: req.file.location, key: req.file.key };
