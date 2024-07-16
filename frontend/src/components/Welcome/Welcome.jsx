@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import axiosInstance from "../../Instance/Axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -21,25 +21,25 @@ function Welcome() {
   });
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchRegistrationStatus = async () => {
-      try {
-        const res = await axiosInstance.get("/users/status/registration");
-        setCompletedSteps(res.data);
-        if (!res.data.personalInfoSubmitted) setStep(1);
-        else if (!res.data.professionalInfoSubmitted) setStep(2);
-        else if (!res.data.purposeSubmitted) setStep(3);
-        else{
-          navigate("/home/dating");
-          //Now im redirecting user to /home page. 
-          //Then we can check user's purpose(short term / long term) and redirect according to it.
-        }
-      } catch (err) {
-        console.error(err);
+  const fetchRegistrationStatus = useCallback(async () => {
+    try {
+      const res = await axiosInstance.get("/users/status/registration");
+      setCompletedSteps(res.data);
+      if (!res.data.personalInfoSubmitted) setStep(1);
+      else if (!res.data.professionalInfoSubmitted) setStep(2);
+      else if (!res.data.purposeSubmitted) setStep(3);
+      else {
+        navigate("/home/dating");
+        //Now im redirecting user to /home page.
+        //Then we can check user's purpose(short term / long term) and redirect according to it.
       }
-    };
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+  useEffect(() => {
     fetchRegistrationStatus();
-  },[]);
+  }, [fetchRegistrationStatus]);
 
   const handleNextStep = () => {
     if (step === 1) {
@@ -52,7 +52,8 @@ function Welcome() {
 
   const handleComplete = () => {
     setCompletedSteps({ ...completedSteps, purposeSubmitted: true });
-    if (purposeType === "shortTermRelationShip") navigate("/home/dating"); //redirecting to dating app dashboard
+    if (purposeType === "shortTermRelationShip")
+      navigate("/home/dating"); //redirecting to dating app dashboard
     //add others here
     else navigate("/home");
   };
