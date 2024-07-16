@@ -47,7 +47,7 @@ exports.doLogin = async (req, res) => {
   }
 };
 
-exports.doLogout = async(req, res) => {
+exports.doLogout = async (req, res) => {
   res.clearCookie("accessToken");
   res.clearCookie("refreshToken");
   res.json({ message: "Logout successful" });
@@ -56,7 +56,9 @@ exports.doLogout = async(req, res) => {
 exports.doRegister = async (req, res) => {
   const { username, email, password, phoneNumber } = req.body;
   try {
-    let user = await User.findOne({ email });
+    let user = await User.findOne({
+      $or: [{ email }, { phoneNumber }],
+    });
     if (user) return res.status(400).json({ message: "User already exists" });
 
     user = new User({ username, email, password, phoneNumber });

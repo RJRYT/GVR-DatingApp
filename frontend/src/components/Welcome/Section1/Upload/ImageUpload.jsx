@@ -10,7 +10,7 @@ function ImageUpload({ setUpload, Uploading, Error, UploadStatus, SetUploadStatu
     if (
       authState.isAuthenticated &&
       authState.user &&
-      authState.user.profilePic
+      authState.user.profilePic.length
     ) {
       const previews = authState.user.profilePic.map((file) =>file.url);
       setImagePreviews(previews);
