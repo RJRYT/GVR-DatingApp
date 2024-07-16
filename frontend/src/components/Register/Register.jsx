@@ -23,7 +23,7 @@ const Register = () => {
 
   useEffect(() => {
     if (!loading && authState.isAuthenticated) navigate("/welcome");
-  }, []);
+  }, [loading, authState]);
 
   const validateForm = () => {
     const newErrors = {};

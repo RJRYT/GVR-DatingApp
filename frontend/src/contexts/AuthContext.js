@@ -15,10 +15,8 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await axiosInstance.get("/users/me");
       setAuthState({ isAuthenticated: true, user: response.data });
-      console.log("[AuthContext] User: ", response);
     } catch (error) {
       setAuthState({ isAuthenticated: false, user: null });
-      console.log("[AuthContext] Error: ", error);
     } finally {
       setLoading(false);
     }
@@ -30,11 +28,10 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await axiosInstance.post("/auth/logout");
-      window.history.location = "/login";
       setAuthState({ isAuthenticated: false, user: null });
-      console.log("user logout completed");
+      await axiosInstance.post("/auth/logout");
       toast.warning("Logout completed");
+      window.history.location = "/login";
     } catch (error) {
       console.error("Logout failed", error);
     }

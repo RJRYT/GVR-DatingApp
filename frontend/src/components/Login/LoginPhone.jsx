@@ -24,7 +24,7 @@ const LoginPhone = () => {
 
   useEffect(() => {
     if (!loading && authState.isAuthenticated) navigate("/welcome");
-  }, []);
+  }, [loading, authState]);
 
   const handleSendOtp = async (e) => {
     const newErrors = {};

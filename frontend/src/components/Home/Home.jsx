@@ -1,17 +1,20 @@
 import React, { useEffect, useContext } from "react";
 import { Container, Row, Col } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../contexts/AuthContext";
 import AccessDenied from "../AccessDenied/AccessDenied";
 import Loading from "../Loading/Loading";
 
 const Home = () => {
   const { authState, checkAuthStatus, loading } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get("token");
     if (token) {
       checkAuthStatus();
+      navigate("/welcome");
     }
   }, []);
 
