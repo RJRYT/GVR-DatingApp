@@ -65,24 +65,15 @@ const generateRandomUser = async () => {
     }),
     gender: faker.person.sexType(),
     location: faker.helpers.arrayElement(locations.map((loc) => loc.value)),
-    hobbies: faker.helpers.arrayElements(
-      hobbies.map((hobbie) => hobbie.value),
-      3
-    ),
-    interests: faker.helpers.arrayElements(
-      interests.map((interest) => interest.value),
-      3
-    ),
+    hobbies: faker.helpers.arrayElements(hobbies, 3),
+    interests: faker.helpers.arrayElements(interests, 3),
     smokingHabits: faker.helpers.arrayElement(
       smokingHabits.map((smk) => smk.value)
     ),
     drinkingHabits: faker.helpers.arrayElement(
       drinkingHabits.map((drnk) => drnk.value)
     ),
-    qualification: faker.helpers.arrayElements(
-      qualifications.map((qulif) => qulif.value),
-      2
-    ),
+    qualification: faker.helpers.arrayElements(qualifications, 2),
     profilePic: [
       {
         url: faker.image.avatar(),
