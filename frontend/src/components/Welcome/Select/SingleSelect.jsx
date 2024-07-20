@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import Select from "react-select/creatable";
+import CreatableSelect from "react-select/creatable";
+import Select from "react-select";
 
 const customStyles = {
   control: (base, state) => ({
@@ -10,8 +11,9 @@ const customStyles = {
     borderBottom: "1px solid #c7b7cf",
     boxShadow: state.isFocused ? null : null,
     "&:hover": {
-      borderBottom: "2px solid #f108df",
+      borderBottom: "2px solid #e81d62",
       backgroundColor: "transparent",
+      cursor: "pointer",
     },
   }),
   placeholder: (styles) => {
@@ -49,23 +51,14 @@ const customStyles = {
       fontWeight: "bold",
     };
   },
-  multiValue: (styles) => {
+  singleValue: (styles) => {
     return {
       ...styles,
-      backgroundColor: "#f9d9df",
+      textAlign: "start",
+      color: "white",
+      paddingLeft: "10px",
     };
   },
-  multiValueLabel: (styles) => ({
-    ...styles,
-    color: "#454545",
-  }),
-  multiValueRemove: (styles) => ({
-    ...styles,
-    color: "#454545",
-    ":hover": {
-      backgroundColor: "#fdb7ef",
-    },
-  }),
 };
 
 const createOption = (label) => ({
@@ -79,16 +72,17 @@ const CustomSelect = ({
   OnChange,
   Disabled,
   name,
+  AllowNew,
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [options, setOptions] = useState(Options);
-  const [value, setValue] = useState([]);
+  const [value, setValue] = useState(null);
 
   const handleCreate = (inputValue) => {
     setIsLoading(true);
     const newOption = createOption(inputValue);
     setOptions((prev) => [...prev, newOption]);
-    handleInputChange([...value, newOption]);
+    handleInputChange(newOption);
   };
 
   const handleInputChange = (e) => {
@@ -97,16 +91,28 @@ const CustomSelect = ({
     const Obj = {
       target: {
         name,
-        value: e,
+        value: e?.value || null,
       },
     };
     OnChange(Obj);
     setIsLoading(false);
   };
 
-  return (
+  return AllowNew ? (
+    <CreatableSelect
+      isClearable
+      classNamePrefix={"dropdown"}
+      isDisabled={Disabled}
+      isLoading={isLoading}
+      styles={customStyles}
+      options={options}
+      onCreateOption={handleCreate}
+      placeholder={Placeholder}
+      onChange={handleInputChange}
+      value={value}
+    />
+  ) : (
     <Select
-      isMulti
       isClearable
       classNamePrefix={"dropdown"}
       isDisabled={Disabled}

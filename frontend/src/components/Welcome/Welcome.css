@@ -82,6 +82,19 @@
     cursor: pointer;
 }
 
+.register-1-form .field-widget input:hover,
+.register-1-form .field-widget select:hover,
+.register-1-form .field-widget label:hover,
+.register-1-form .field-widget input:focus,
+.register-1-form .field-widget select:focus,
+.register-1-form .field-widget label:focus {
+    border-bottom: 2px solid #e81d62;
+}
+
+.register-1-form .field-widget input::placeholder {
+    color: white;
+}
+
 .register-1-form .field-widget .radio-group {
     display: flex;
     justify-content: space-evenly;

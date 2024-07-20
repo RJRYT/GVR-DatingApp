@@ -5,14 +5,24 @@ import ImageUpload from "./Upload/ImageUpload";
 import ReelUpload from "./Upload/ReelUpload";
 import { toast } from "react-toastify";
 
-import { hobbies, interests, qualifications } from "./Data";
-import Select from "./Select";
+import {
+  drinkingHabits,
+  gender,
+  hobbies,
+  interests,
+  locations,
+  qualifications,
+  smokingHabits,
+} from "../../../assets/data/Data";
+import MultiSelect from "../Select/MultiSelect";
+import SingleSelect from "../Select/SingleSelect";
 
 function Section1({ onNext }) {
   const [formData, setFormData] = useState({
     age: "",
     dateOfBirth: "",
     gender: "",
+    location: "",
     hobbies: [],
     interests: [],
     smokingHabits: "",
@@ -54,6 +64,11 @@ function Section1({ onNext }) {
     // gender validation
     if (!formData.gender) {
       newErrors.gender = "Gender is required";
+    }
+
+    // location validation
+    if (!formData.location) {
+      newErrors.location = "Location is required";
     }
 
     // hobbies validation
@@ -268,19 +283,14 @@ function Section1({ onNext }) {
                 <div className="section-field mb-3">
                   <div className="field-widget">
                     <i className="fa fa-venus-mars" aria-hidden="true"></i>
-                    <select
-                      id="gender"
+                    <SingleSelect
                       name="gender"
-                      value={formData.gender}
-                      onChange={handleInputChange}
-                      disabled={isUploading}
-                    >
-                      <option value="" disabled>
-                        Gender
-                      </option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
-                    </select>
+                      OnChange={handleInputChange}
+                      Options={gender}
+                      Disabled={isUploading}
+                      Placeholder="Gender"
+                      AllowNew={false}
+                    />
                   </div>
                   {errors.gender && (
                     <div className="error">{errors.gender}</div>
@@ -288,8 +298,24 @@ function Section1({ onNext }) {
                 </div>
                 <div className="section-field mb-3">
                   <div className="field-widget">
+                    <i className="fa fa-map-marker" aria-hidden="true"></i>
+                    <SingleSelect
+                      name="location"
+                      OnChange={handleInputChange}
+                      Options={locations}
+                      Disabled={isUploading}
+                      Placeholder="Location"
+                      AllowNew={true}
+                    />
+                  </div>
+                  {errors.location && (
+                    <div className="error">{errors.location}</div>
+                  )}
+                </div>
+                <div className="section-field mb-3">
+                  <div className="field-widget">
                     <i className="fa fa-futbol-o" aria-hidden="true"></i>
-                    <Select
+                    <MultiSelect
                       name="hobbies"
                       OnChange={handleInputChange}
                       Options={hobbies}
@@ -304,7 +330,7 @@ function Section1({ onNext }) {
                 <div className="section-field mb-3">
                   <div className="field-widget">
                     <i className="fa fa-bullseye"></i>
-                    <Select
+                    <MultiSelect
                       name="interests"
                       OnChange={handleInputChange}
                       Options={interests}
@@ -319,20 +345,14 @@ function Section1({ onNext }) {
                 <div className="section-field mb-3">
                   <div className="field-widget">
                     <i className="fa fa-futbol-o"></i>
-                    <select
-                      id="smokingHabits"
+                    <SingleSelect
                       name="smokingHabits"
-                      value={formData.smokingHabits}
-                      onChange={handleInputChange}
-                      disabled={isUploading}
-                    >
-                      <option value="" disabled>
-                        Smoking Habbits
-                      </option>
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
-                      <option value="planningToQuit">Planning To Quit</option>
-                    </select>
+                      OnChange={handleInputChange}
+                      Options={smokingHabits}
+                      Disabled={isUploading}
+                      Placeholder="Smoking Habits"
+                      AllowNew={false}
+                    />
                   </div>
                   {errors.smokingHabits && (
                     <div className="error">{errors.smokingHabits}</div>
@@ -341,22 +361,14 @@ function Section1({ onNext }) {
                 <div className="section-field mb-3">
                   <div className="field-widget">
                     <i className="fa fa-beer" aria-hidden="true"></i>
-                    <select
-                      id="drinkingHabits"
+                    <SingleSelect
                       name="drinkingHabits"
-                      value={formData.drinkingHabits}
-                      onChange={handleInputChange}
-                      disabled={isUploading}
-                    >
-                      <option value="" disabled>
-                        Drinking Habbits
-                      </option>
-                      <option value="regular">Regular</option>
-                      <option value="planningToQuit">Planning To Quit</option>
-                      <option value="socially">Socially</option>
-                      <option value="occasionally">Occasionally</option>
-                      <option value="teeToTaler">Teetotaler</option>
-                    </select>
+                      OnChange={handleInputChange}
+                      Options={drinkingHabits}
+                      Disabled={isUploading}
+                      Placeholder="Drinking Habits"
+                      AllowNew={false}
+                    />
                   </div>
                   {errors.drinkingHabits && (
                     <div className="error">{errors.drinkingHabits}</div>
@@ -365,7 +377,7 @@ function Section1({ onNext }) {
                 <div className="section-field mb-3">
                   <div className="field-widget">
                     <i className="fa fa-graduation-cap" aria-hidden="true"></i>
-                    <Select
+                    <MultiSelect
                       name="qualification"
                       OnChange={handleInputChange}
                       Options={qualifications}

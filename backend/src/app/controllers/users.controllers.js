@@ -183,6 +183,7 @@ exports.updateUserPersonalDetails = async (req, res) => {
     user.dateOfBirth = req.body.dateOfBirth;
     user.gender = req.body.gender; 
     user.hobbies = req.body.hobbies;
+    user.location = req.body.location;
     user.interests = req.body.interests;
     user.smokingHabits = req.body.smokingHabits;
     user.drinkingHabits = req.body.drinkingHabits;
@@ -217,7 +218,7 @@ exports.updateUserProfessinalDetails = async (req, res) => {
     ) {
       user.companyName = formData.companyName;
       user.designation = formData.designation;
-      user.location = formData.location;
+      user.jobLocation = formData.jobLocation;
       user.professionalInfoSubmitted = true;
       user.professionType = formData.professionType;
     } else if (formData.professionType === "jobseeker") {

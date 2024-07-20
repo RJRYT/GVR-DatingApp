@@ -3,6 +3,9 @@ import axiosInstance from "../../../Instance/Axios";
 import { Container, Row, Col } from "react-bootstrap";
 import { toast } from "react-toastify";
 
+import { expertLevel, locations } from "../../../assets/data/Data";
+import SingleSelect from "../Select/SingleSelect";
+
 function Section2({ onNext }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
@@ -10,14 +13,14 @@ function Section2({ onNext }) {
     professionType: "",
     companyName: "",
     designation: "",
-    location: "",
+    jobLocation: "",
     expertiseLevel: "",
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    if(name === "professionType") setErrors({});
+    if (name === "professionType") setErrors({});
   };
 
   const validateForm = () => {
@@ -37,9 +40,9 @@ function Section2({ onNext }) {
         newErrors.designation = "Designation is required";
       }
 
-      // location validation
-      if (!formData.location) {
-        newErrors.location = "Location is required";
+      // jobLocation validation
+      if (!formData.jobLocation) {
+        newErrors.jobLocation = "Location is required";
       }
     }
 
@@ -162,16 +165,16 @@ function Section2({ onNext }) {
                     <div className="section-field mb-3">
                       <div className="field-widget">
                         <i className="fa fa-map-marker"></i>
-                        <input
-                          type="text"
-                          name="location"
-                          value={formData.location}
-                          onChange={handleInputChange}
-                          placeholder="Location"
+                        <SingleSelect
+                          name="jobLocation"
+                          OnChange={handleInputChange}
+                          Options={locations}
+                          Placeholder="Location"
+                          AllowNew={true}
                         />
                       </div>
-                      {errors.location && (
-                        <div className="error">{errors.location}</div>
+                      {errors.jobLocation && (
+                        <div className="error">{errors.jobLocation}</div>
                       )}
                     </div>
                   </>
@@ -180,18 +183,13 @@ function Section2({ onNext }) {
                   <div className="section-field mb-3">
                     <div className="field-widget">
                       <i className="fa fa-graduation-cap"></i>
-                      <select
+                      <SingleSelect
                         name="expertiseLevel"
-                        value={formData.expertiseLevel}
-                        onChange={handleInputChange}
-                      >
-                        <option value="" disabled>
-                          Expertise Level
-                        </option>
-                        <option value="beginner">Beginner</option>
-                        <option value="intern">Intern</option>
-                        <option value="expert">Expert</option>
-                      </select>
+                        OnChange={handleInputChange}
+                        Options={expertLevel}
+                        Placeholder="Expertise Level"
+                        AllowNew={false}
+                      />
                     </div>
                     {errors.expertiseLevel && (
                       <div className="error">{errors.expertiseLevel}</div>
