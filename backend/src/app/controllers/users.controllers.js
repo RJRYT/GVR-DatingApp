@@ -180,7 +180,8 @@ exports.updateUserPersonalDetails = async (req, res) => {
     }
 
     user.age = req.body.age;
-    user.dob = req.body.dob;
+    user.dateOfBirth = req.body.dateOfBirth;
+    user.gender = req.body.gender; 
     user.hobbies = req.body.hobbies;
     user.interests = req.body.interests;
     user.smokingHabits = req.body.smokingHabits;

@@ -12,7 +12,7 @@ module.exports = (mongoose) => {
     key: { type: String, reqired: true },
     uploadedAt: { type: Date, default: Date.now },
   });
-  
+
   const UserSchema = mongoose.Schema(
     {
       firstName: { type: String },
@@ -31,11 +31,12 @@ module.exports = (mongoose) => {
       purposeSubmitted: { type: Boolean, default: false },
       age: { type: Number },
       dateOfBirth: { type: Date },
-      hobbies: { type: Array },
-      interests: { type: Array },
+      gender: { type: String },
+      hobbies: [{ label: String, value: String }],
+      interests: [{ label: String, value: String }],
       smokingHabits: { type: String },
       drinkingHabits: { type: String },
-      qualification: { type: String },
+      qualification: [{ label: String, value: String }],
       profilePic: [ProfilePicSchema],
       shortReel: ShortReelSchema,
       professionType: { type: String },
@@ -44,6 +45,7 @@ module.exports = (mongoose) => {
       location: { type: String },
       expertiseLevel: { type: String },
       purpose: { type: String },
+      fake: { type: Boolean },
     },
     { timestamps: true }
   );
