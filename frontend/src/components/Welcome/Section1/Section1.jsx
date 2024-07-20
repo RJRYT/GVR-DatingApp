@@ -5,15 +5,19 @@ import ImageUpload from "./Upload/ImageUpload";
 import ReelUpload from "./Upload/ReelUpload";
 import { toast } from "react-toastify";
 
+import { hobbies, interests, qualifications } from "./Data";
+import Select from "./Select";
+
 function Section1({ onNext }) {
   const [formData, setFormData] = useState({
     age: "",
     dateOfBirth: "",
-    hobbies: "",
-    interests: "",
+    gender: "",
+    hobbies: [],
+    interests: [],
     smokingHabits: "",
     drinkingHabits: "",
-    qualification: "",
+    qualification: [],
   });
 
   const [profilePicsUploaded, setProfilePicsUploaded] = useState(false);
@@ -28,6 +32,8 @@ function Section1({ onNext }) {
     // age validation
     if (!formData.age) {
       newErrors.age = "Age is required";
+    } else if (formData.age < 20 || formData.age > 40) {
+      newErrors.age = "Age must be between 20 and 40.";
     }
 
     // dateOfBirth validation
@@ -35,13 +41,28 @@ function Section1({ onNext }) {
       newErrors.dateOfBirth = "date Of Birth is required";
     }
 
+    if (formData.age && formData.dateOfBirth) {
+      const calculatedAge =
+        new Date().getFullYear() - new Date(formData.dateOfBirth).getFullYear();
+
+      if (calculatedAge !== parseInt(formData.age, 10)) {
+        newErrors.age = "Age and date of birth do not match.";
+        newErrors.dateOfBirth = "Age and date of birth do not match.";
+      }
+    }
+
+    // gender validation
+    if (!formData.gender) {
+      newErrors.gender = "Gender is required";
+    }
+
     // hobbies validation
-    if (!formData.hobbies) {
+    if (!formData.hobbies.length) {
       newErrors.hobbies = "Hobbies is required";
     }
 
     // interests validation
-    if (!formData.interests) {
+    if (!formData.interests.length) {
       newErrors.interests = "Interests is required";
     }
 
@@ -56,7 +77,7 @@ function Section1({ onNext }) {
     }
 
     // qualification validation
-    if (!formData.qualification) {
+    if (!formData.qualification.length) {
       newErrors.qualification = "Qualification is required";
     }
 
@@ -81,7 +102,7 @@ function Section1({ onNext }) {
   };
 
   const handleProfilePicSubmit = async (profilePics) => {
-    if(profilePics.length > 5){
+    if (profilePics.length > 5) {
       toast.error("You can only choose upto 5 images");
       return;
     }
@@ -94,31 +115,27 @@ function Section1({ onNext }) {
       autoClose: false,
     });
     try {
-      await axiosInstance.post(
-        "/users/upload/profilepics",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-          onUploadProgress: (progressEvent) => {
-            const progress = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            if (progress === 100) {
-              toast.update(uploadToastId, {
-                render: `Processing...`,
-                type: "info",
-                autoClose: false,
-              });
-            } else {
-              toast.update(uploadToastId, {
-                render: `Upload progress: ${progress}%`,
-                type: "info",
-                autoClose: false,
-              });
-            }
-          },
-        }
-      );
+      await axiosInstance.post("/users/upload/profilepics", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          if (progress === 100) {
+            toast.update(uploadToastId, {
+              render: `Processing...`,
+              type: "info",
+              autoClose: false,
+            });
+          } else {
+            toast.update(uploadToastId, {
+              render: `Upload progress: ${progress}%`,
+              type: "info",
+              autoClose: false,
+            });
+          }
+        },
+      });
       toast.update(uploadToastId, {
         render: "Profile Pics upload completed",
         type: "success",
@@ -237,6 +254,7 @@ function Section1({ onNext }) {
                       id="Dob"
                       type="date"
                       name="dateOfBirth"
+                      max="2004-12-30"
                       placeholder="date of birth"
                       value={formData.dateOfBirth}
                       onChange={handleInputChange}
@@ -249,20 +267,35 @@ function Section1({ onNext }) {
                 </div>
                 <div className="section-field mb-3">
                   <div className="field-widget">
-                    <i className="fa fa-futbol-o" aria-hidden="true"></i>
+                    <i className="fa fa-venus-mars" aria-hidden="true"></i>
                     <select
-                      id="hobbie"
-                      name="hobbies"
-                      value={formData.hobbies}
+                      id="gender"
+                      name="gender"
+                      value={formData.gender}
                       onChange={handleInputChange}
                       disabled={isUploading}
                     >
                       <option value="" disabled>
-                        Hobbies
+                        Gender
                       </option>
-                      <option value="gaming">gaming</option>
-                      <option value="sleeping">sleeping</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
                     </select>
+                  </div>
+                  {errors.gender && (
+                    <div className="error">{errors.gender}</div>
+                  )}
+                </div>
+                <div className="section-field mb-3">
+                  <div className="field-widget">
+                    <i className="fa fa-futbol-o" aria-hidden="true"></i>
+                    <Select
+                      name="hobbies"
+                      OnChange={handleInputChange}
+                      Options={hobbies}
+                      Disabled={isUploading}
+                      Placeholder="Hobbies"
+                    />
                   </div>
                   {errors.hobbies && (
                     <div className="error">{errors.hobbies}</div>
@@ -271,19 +304,13 @@ function Section1({ onNext }) {
                 <div className="section-field mb-3">
                   <div className="field-widget">
                     <i className="fa fa-bullseye"></i>
-                    <select
-                      id="interests"
+                    <Select
                       name="interests"
-                      value={formData.interests}
-                      onChange={handleInputChange}
-                      disabled={isUploading}
-                    >
-                      <option value="" disabled>
-                        Interests
-                      </option>
-                      <option value="mornig tea">mornig tea</option>
-                      <option value="traveling">traveling</option>
-                    </select>
+                      OnChange={handleInputChange}
+                      Options={interests}
+                      Disabled={isUploading}
+                      Placeholder="Interests"
+                    />
                   </div>
                   {errors.interests && (
                     <div className="error">{errors.interests}</div>
@@ -338,14 +365,12 @@ function Section1({ onNext }) {
                 <div className="section-field mb-3">
                   <div className="field-widget">
                     <i className="fa fa-graduation-cap" aria-hidden="true"></i>
-                    <input
-                      id="qualification"
-                      type="text"
+                    <Select
                       name="qualification"
-                      placeholder="Qualifictions"
-                      value={formData.qualification}
-                      onChange={handleInputChange}
-                      disabled={isUploading}
+                      OnChange={handleInputChange}
+                      Options={qualifications}
+                      Disabled={isUploading}
+                      Placeholder="Qualifictions"
                     />
                   </div>
                   {errors.qualification && (
