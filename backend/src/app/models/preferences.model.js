@@ -5,11 +5,18 @@ module.exports = (mongoose) => {
       ref: "User",
       required: true,
     },
-    preferredAgeRange: { min: Number, max: Number },
-    preferredLocation: String,
-    preferredInterests: [String],
-    preferredGender: String,
-    fake: Boolean,
+    AgeRange: {
+      min: { type: Number, required: true },
+      max: { type: Number, required: true },
+    },
+    Location: { type: String, required: true },
+    Interests: { type: [String], default: [] },
+    Hobbies: { type: [String], default: [] },
+    Education: { type: [String], default: [] },
+    Gender: { type: String, default: "" },
+    Smoking: { type: String, default: "" },
+    Drinking: { type: String, default: "" },
+    fake: { type: Boolean },
   });
   return mongoose.model("Preferences", PreferencesSchema);
 };

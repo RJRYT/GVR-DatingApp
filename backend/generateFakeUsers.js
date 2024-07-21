@@ -110,18 +110,28 @@ const generateRandomUser = async () => {
 const generateRandomUserPreferences = async (userId) => {
   return new Preferences({
     userId,
-    preferredAgeRange: {
+    AgeRange: {
       min: faker.number.int({ min: 20, max: 30 }),
       max: faker.number.int({ min: 31, max: 40 }),
     },
-    preferredLocation: faker.helpers.arrayElement(
-      locations.map((loc) => loc.value)
-    ),
-    preferredInterests: faker.helpers.arrayElements(
+    Location: faker.helpers.arrayElement(locations.map((loc) => loc.value)),
+    Interests: faker.helpers.arrayElements(
       interests.map((interest) => interest.value),
       3
     ),
-    preferredGender: faker.helpers.arrayElement(gender.map((gen) => gen.value)),
+    Hobbies: faker.helpers.arrayElements(
+      hobbies.map((hby) => hby.value),
+      2
+    ),
+    Education: faker.helpers.arrayElements(
+      qualifications.map((qual) => qual.value),
+      2
+    ),
+    Gender: faker.helpers.arrayElement(gender.map((gen) => gen.value)),
+    Smoking: faker.helpers.arrayElement(smokingHabits.map((smk) => smk.value)),
+    Drinking: faker.helpers.arrayElement(
+      drinkingHabits.map((drnk) => drnk.value)
+    ),
     fake: true,
   }).save();
 };

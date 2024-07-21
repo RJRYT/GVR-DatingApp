@@ -67,7 +67,7 @@ db.mongoose
     process.exit();
   });
 
-app.get("/", (req, res) => {
+app.get(["/", "/api"], (req, res) => {
   res.json({ message: "Welcome to dating application api." });
 });
 
@@ -75,12 +75,14 @@ require("./app/config/passport.config")(passport);
 
 require("./app/routes/auth.routes")(app);
 require("./app/routes/users.routes")(app);
+require("./app/routes/matches.routes")(app);
 
-//Error handling
+//Notfound handling
 app.use(function (req, res) {
   res.status(404).json({ message: "Resource not found" });
 });
 
+//Error handling
 app.use(async function (err, req, res, next) {
   if (!err) {
     return next();
