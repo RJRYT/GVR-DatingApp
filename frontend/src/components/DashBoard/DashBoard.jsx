@@ -1,14 +1,12 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { AuthContext } from "../../contexts/AuthContext";
 import AccessDenied from "../AccessDenied/AccessDenied";
 import Loading from "../Loading/Loading";
 import Matches from "../Matches/Matches";
-import Preferences from "../Preferences/Preferences";
 
 const DashBoard = () => {
   const { authState, loading } = useContext(AuthContext);
-  const [ shown, setShown ] = useState(false);
 
   if (loading) return <Loading />;
 
@@ -25,15 +23,7 @@ const DashBoard = () => {
                 <h3 className="text-dark">
                   Welcome, {authState.user.username}
                 </h3>
-                <button
-                  onClick={() => setShown(!shown)}
-                  className="btn btn-primary"
-                >
-                  {shown ? "Hide" : "Show"} Preferences
-                </button>
               </div>
-              <hr />
-              {shown && <Preferences />}
               <hr />
               <Matches />
             </>
