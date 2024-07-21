@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "../../Instance/Axios";
+import axios from "../../../Instance/Axios";
 
 const PreferencesModal = ({ isOpen, onClose, onSave }) => {
   const [preferences, setPreferences] = useState({

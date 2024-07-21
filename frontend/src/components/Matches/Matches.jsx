@@ -1,38 +1,55 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../Instance/Axios";
 import "./Matches.css";
-import Preferences from "../Preferences/Preferences";
+import Preferences from "./Preferences/Preferences";
 
 const MatchingPage = () => {
   const [matches, setMatches] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [matchesPerPage] = useState(10); // Change this value to set the number of matches per page
+  const [totalPages, setTotalPages] = useState(0);
+  const [matchesPerPage] = useState(10); // Matches per page
   const [isPreferencesModalOpen, setPreferencesModalOpen] = useState(false);
-  const [isFilterSortModalOpen, setFilterSortModalOpen] = useState(false);
-  const [filter, setFilter] = useState("");
+  const [isFilterModalOpen, setFilterModalOpen] = useState(false);
+  const [isSortModalOpen, setSortModalOpen] = useState(false);
+  const [filter, setFilter] = useState({});
   const [sort, setSort] = useState("");
 
   const fetchMatches = async () => {
     try {
-      const response = await axios.get("/matches/me");
+      const response = await axios.get("/matches/me", {
+        params: { page: currentPage, limit: matchesPerPage },
+      });
       setMatches(response.data.matches);
+      setTotalPages(response.data.totalPages);
     } catch (err) {
       console.error(err);
     }
   };
   useEffect(() => {
     fetchMatches();
-  }, []);
+  }, [currentPage]);
 
   const applyFilterAndSort = () => {
     let filteredMatches = [...matches];
 
-    if (filter) {
+    // Apply filters
+    if (filter.gender) {
       filteredMatches = filteredMatches.filter(
-        (match) => match.gender === filter
+        (match) => match.gender === filter.gender
+      );
+    }
+    if (filter.smoking) {
+      filteredMatches = filteredMatches.filter(
+        (match) => match.smokingHabits === filter.smoking
+      );
+    }
+    if (filter.drinking) {
+      filteredMatches = filteredMatches.filter(
+        (match) => match.drinkingHabits === filter.drinking
       );
     }
 
+    // Apply sorting
     if (sort) {
       filteredMatches.sort((a, b) => {
         if (sort === "ageAsc") {
@@ -56,35 +73,26 @@ const MatchingPage = () => {
     setCurrentPage(pageNumber);
   };
 
-  const paginatedMatches = applyFilterAndSort().slice(
-    (currentPage - 1) * matchesPerPage,
-    currentPage * matchesPerPage
-  );
-
-  const pageNumbers = [];
-  for (
-    let i = 1;
-    i <= Math.ceil(applyFilterAndSort().length / matchesPerPage);
-    i++
-  ) {
-    pageNumbers.push(i);
-  }
+  const filteredAndSortedMatches = applyFilterAndSort();
 
   return (
     <div className="matching-container page-container">
       <div className="page-header">
         <h1>Matching Dashboard</h1>
-        <div>
-          <button onClick={() => setPreferencesModalOpen(true)}>
-            Set Preferences
-          </button>
-          <button onClick={() => setFilterSortModalOpen(true)}>
-            Filter & Sort
-          </button>
+        <div className="header-buttons">
+          <i
+            className="fa fa-sliders"
+            onClick={() => setPreferencesModalOpen(true)}
+          ></i>
+          <i
+            className="fa fa-filter"
+            onClick={() => setFilterModalOpen(true)}
+          ></i>
+          <i className="fa fa-sort" onClick={() => setSortModalOpen(true)}></i>
         </div>
       </div>
       <div className="matches-list">
-        {paginatedMatches.map((match) => (
+        {filteredAndSortedMatches.map((match) => (
           <div key={match._id} className="match-item">
             <img src={match.profilePic[0].url} alt={match.username} />
             <p>
@@ -95,13 +103,13 @@ const MatchingPage = () => {
         ))}
       </div>
       <div className="pagination">
-        {pageNumbers.map((number) => (
+        {[...Array(totalPages).keys()].map((number) => (
           <button
-            key={number}
-            onClick={() => handlePageChange(number)}
-            className={currentPage === number ? "active" : ""}
+            key={number + 1}
+            onClick={() => handlePageChange(number + 1)}
+            className={currentPage === number + 1 ? "active" : ""}
           >
-            {number}
+            {number + 1}
           </button>
         ))}
       </div>
@@ -112,28 +120,68 @@ const MatchingPage = () => {
           onSave={handlePreferencesSave}
         />
       )}
-      {isFilterSortModalOpen && (
+      {isFilterModalOpen && (
         <div className="matches-model modal">
           <div className="modal-content">
-            <span
-              className="close"
-              onClick={() => setFilterSortModalOpen(false)}
-            >
+            <span className="close" onClick={() => setFilterModalOpen(false)}>
               &times;
             </span>
-            <h2>Filter & Sort</h2>
+            <h2>Filter</h2>
             <form>
               <div>
                 <label>Filter by Gender:</label>
                 <select
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value)}
+                  value={filter.gender}
+                  onChange={(e) =>
+                    setFilter({ ...filter, gender: e.target.value })
+                  }
                 >
                   <option value="">All</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
                 </select>
               </div>
+              <div>
+                <label>Filter by Smoking Habits:</label>
+                <select
+                  value={filter.smoking}
+                  onChange={(e) =>
+                    setFilter({ ...filter, smoking: e.target.value })
+                  }
+                >
+                  <option value="">All</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+              <div>
+                <label>Filter by Drinking Habits:</label>
+                <select
+                  value={filter.drinking}
+                  onChange={(e) =>
+                    setFilter({ ...filter, drinking: e.target.value })
+                  }
+                >
+                  <option value="">All</option>
+                  <option value="yes">Yes</option>
+                  <option value="no">No</option>
+                </select>
+              </div>
+              <button type="button" onClick={() => setFilterModalOpen(false)}>
+                Apply
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+      {isSortModalOpen && (
+        <div className="matches-model modal">
+          <div className="modal-content">
+            <span className="close" onClick={() => setSortModalOpen(false)}>
+              &times;
+            </span>
+            <h2>Sort</h2>
+            <form>
               <div>
                 <label>Sort by Age:</label>
                 <select value={sort} onChange={(e) => setSort(e.target.value)}>
@@ -142,10 +190,7 @@ const MatchingPage = () => {
                   <option value="ageDesc">Descending</option>
                 </select>
               </div>
-              <button
-                type="button"
-                onClick={() => setFilterSortModalOpen(false)}
-              >
+              <button type="button" onClick={() => setSortModalOpen(false)}>
                 Apply
               </button>
             </form>

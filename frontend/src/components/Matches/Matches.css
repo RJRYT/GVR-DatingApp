@@ -24,6 +24,11 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.matches-model h2 {
+    color: #e81d62;
+    font-family: Georgia, 'Times New Roman', Times, serif
+}
+
 .matches-model .close {
     color: #aaa;
     float: right;
@@ -46,6 +51,7 @@
 .matches-model label {
     margin-top: 10px;
     font-weight: bold;
+    color: #464646;
 }
 
 .matches-model input,
@@ -61,7 +67,7 @@
     margin-top: 20px;
     padding: 10px 15px;
     font-size: 16px;
-    background-color: #007bff;
+    background-color: #e81d62;
     color: white;
     border: none;
     border-radius: 4px;
@@ -69,8 +75,9 @@
 }
 
 .matches-model button:hover {
-    background-color: #0056b3;
+    background-color: #e6044f;
 }
+
 /* matchingPage.css */
 .matching-container.page-container {
     padding: 20px;
@@ -89,18 +96,19 @@
     margin: 0;
 }
 
-.matching-container .page-header button {
-    padding: 10px 15px;
-    font-size: 16px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
+.matching-container .header-buttons {
+    display: flex;
+    gap: 15px;
 }
 
-.matching-container .page-header button:hover {
-    background-color: #218838;
+.matching-container .header-buttons .fa {
+    font-size: 24px;
+    cursor: pointer;
+    color: #007bff;
+}
+
+.matching-container .header-buttons .fa:hover {
+    color: #0056b3;
 }
 
 .matching-container .matches-list {
