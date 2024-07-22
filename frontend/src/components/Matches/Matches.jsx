@@ -78,7 +78,7 @@ const MatchingPage = () => {
   return (
     <div className="matching-container page-container">
       <div className="page-header">
-        <h1>Matching Dashboard</h1>
+        <h1 className="text-dark text-center">Matching Dashboard</h1>
         <div className="header-buttons">
           <i
             className="fa fa-sliders"
@@ -91,17 +91,52 @@ const MatchingPage = () => {
           <i className="fa fa-sort" onClick={() => setSortModalOpen(true)}></i>
         </div>
       </div>
-      <div className="matches-list">
-        {filteredAndSortedMatches.map((match, key) => (
-          <div key={key} className="match-item">
-            <img src={match.profilePic[0].url} alt={match.username} />
-            <p>
-              {match.username}, {match.age}
-            </p>
-            <p>{match.location}</p>
-          </div>
-        ))}
-      </div>
+      {filteredAndSortedMatches.length ? (
+        <div className="matches-list">
+          {filteredAndSortedMatches.map((match, key) => (
+            <div
+              key={key}
+              className="match-item"
+              title={`Profile of ${match.username}`}
+            >
+              <img
+                src={match.profilePic[0].url}
+                alt={match.username}
+                title={match.username}
+              />
+              <p title={`Name: ${match.username}, Age: ${match.age}`}>
+                {match.username}, {match.age}
+              </p>
+              <p title={`Location: ${match.location}`}>{match.location}</p>
+              <hr />
+              <p>
+                <u>Education:</u>{" "}
+                {match.qualification.map((qual) => qual.label).join(", ")}
+              </p>
+              <p>
+                <u>Hobbies:</u>{" "}
+                {match.hobbies.map((hby) => hby.label).join(", ")}
+              </p>
+              <p>
+                <u>Interests:</u>{" "}
+                {match.interests.map((intr) => intr.label).join(", ")}
+              </p>
+              <p>
+                <u>Drinking:</u> {match.drinkingHabits}
+              </p>
+              <p>
+                <u>Smoking:</u> {match.smokingHabits}
+              </p>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div>
+          <h3 className="text-dark text-center">
+            Update your preferences to view matches
+          </h3>
+        </div>
+      )}
       <div className="pagination">
         {[...Array(totalPages).keys()].map((number) => (
           <button

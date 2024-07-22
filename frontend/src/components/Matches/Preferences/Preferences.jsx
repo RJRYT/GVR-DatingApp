@@ -10,7 +10,7 @@ import {
   smokingHabits,
   drinkingHabits,
 } from "../../../assets/data/Data";
-import CustomSelect from "./CustomSelect";
+import CustomSelect from "../CustomSelect";
 
 const PreferencesModal = ({ isOpen, onClose, onSave }) => {
   const [preferences, setPreferences] = useState({

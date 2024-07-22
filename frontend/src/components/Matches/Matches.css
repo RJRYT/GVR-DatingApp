@@ -87,18 +87,20 @@
 
 .matching-container .page-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     margin-bottom: 20px;
 }
 
 .matching-container .page-header h1 {
     margin: 0;
+    margin-left: auto;
 }
 
 .matching-container .header-buttons {
     display: flex;
     gap: 15px;
+    margin-left: auto;
 }
 
 .matching-container .header-buttons .fa {
