@@ -92,8 +92,8 @@ const MatchingPage = () => {
         </div>
       </div>
       <div className="matches-list">
-        {filteredAndSortedMatches.map((match) => (
-          <div key={match._id} className="match-item">
+        {filteredAndSortedMatches.map((match, key) => (
+          <div key={key} className="match-item">
             <img src={match.profilePic[0].url} alt={match.username} />
             <p>
               {match.username}, {match.age}

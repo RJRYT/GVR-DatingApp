@@ -104,11 +104,11 @@
 .matching-container .header-buttons .fa {
     font-size: 24px;
     cursor: pointer;
-    color: #007bff;
+    color: #e81d62;
 }
 
 .matching-container .header-buttons .fa:hover {
-    color: #0056b3;
+    color: #e6044f;
 }
 
 .matching-container .matches-list {
@@ -152,13 +152,13 @@
     padding: 8px 12px;
     font-size: 14px;
     background-color: #f8f9fa;
-    border: 1px solid #ddd;
+    border: 1px solid #e81d62;
     border-radius: 4px;
     cursor: pointer;
 }
 
 .matching-container .pagination button.active {
-    background-color: #007bff;
+    background-color: #e81d62;
     color: white;
 }
 

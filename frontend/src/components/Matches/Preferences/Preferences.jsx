@@ -1,6 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../../Instance/Axios";
 
+import {
+  locations,
+  interests,
+  hobbies,
+  qualifications,
+  gender,
+  smokingHabits,
+  drinkingHabits,
+} from "../../../assets/data/Data";
+import CustomSelect from "./CustomSelect";
+
 const PreferencesModal = ({ isOpen, onClose, onSave }) => {
   const [preferences, setPreferences] = useState({
     AgeRange: { min: "", max: "" },
@@ -45,6 +56,7 @@ const PreferencesModal = ({ isOpen, onClose, onSave }) => {
       onSave();
     } catch (err) {
       console.error(err);
+      alert(err.response.data.message || "Somthing broken... ! Try again later");
     }
   };
 
@@ -62,9 +74,11 @@ const PreferencesModal = ({ isOpen, onClose, onSave }) => {
         <form>
           <div>
             <label>Age Range:</label>
+            <br />
             <input
               type="number"
               name="AgeRange.min"
+              style={{ width: "50%" }}
               value={preferences.AgeRange.min}
               onChange={(e) =>
                 setPreferences({
@@ -77,6 +91,7 @@ const PreferencesModal = ({ isOpen, onClose, onSave }) => {
             <input
               type="number"
               name="AgeRange.max"
+              style={{ width: "50%" }}
               value={preferences.AgeRange.max}
               onChange={(e) =>
                 setPreferences({
@@ -89,84 +104,79 @@ const PreferencesModal = ({ isOpen, onClose, onSave }) => {
           </div>
           <div>
             <label>Location:</label>
-            <input
-              type="text"
-              name="Location"
-              value={preferences.Location}
-              onChange={handleChange}
-              required
+            <CustomSelect
+              Name="Location"
+              Options={locations}
+              Value={preferences.Location}
+              OnChange={handleChange}
+              Placeholder={"Location"}
+              AllowMultiple={false}
             />
           </div>
           <div>
             <label>Interests:</label>
-            <input
-              type="text"
-              name="Interests"
-              value={preferences.Interests.join(", ")}
-              onChange={(e) => {
-                if (e.target.value === "") e.target.value = null;
-                setPreferences({
-                  ...preferences,
-                  Interests: e.target.value ? e.target.value.split(", ") : [],
-                });
-              }}
+            <CustomSelect
+              Name="Interests"
+              Options={interests}
+              Value={preferences.Interests}
+              OnChange={handleChange}
+              Placeholder={"Interests"}
+              AllowMultiple={true}
             />
           </div>
           <div>
             <label>Hobbies:</label>
-            <input
-              type="text"
-              name="Hobbies"
-              value={preferences.Hobbies.join(", ")}
-              onChange={(e) => {
-                if (e.target.value === "") e.target.value = null;
-                setPreferences({
-                  ...preferences,
-                  Hobbies: e.target.value ? e.target.value.split(", ") : [],
-                });
-              }}
+            <CustomSelect
+              Name="Hobbies"
+              Options={hobbies}
+              Value={preferences.Hobbies}
+              OnChange={handleChange}
+              Placeholder={"Hobbies"}
+              AllowMultiple={true}
             />
           </div>
           <div>
             <label>Education:</label>
-            <input
-              type="text"
-              name="Education"
-              value={preferences.Education.join(", ")}
-              onChange={(e) => {
-                if (e.target.value === "") e.target.value = null;
-                setPreferences({
-                  ...preferences,
-                  Education: e.target.value ? e.target.value.split(", ") : [],
-                });
-              }}
+            <CustomSelect
+              Name="Education"
+              Options={qualifications}
+              Value={preferences.Education}
+              OnChange={handleChange}
+              Placeholder={"Education"}
+              AllowMultiple={true}
             />
           </div>
           <div>
             <label>Gender:</label>
-            <input
-              type="text"
-              name="Gender"
-              value={preferences.Gender}
-              onChange={handleChange}
+            <CustomSelect
+              Name="Gender"
+              Options={gender}
+              Value={preferences.Gender}
+              OnChange={handleChange}
+              Placeholder={"Gender"}
+              AllowMultiple={false}
             />
           </div>
           <div>
             <label>Smoking:</label>
-            <input
-              type="text"
-              name="Smoking"
-              value={preferences.Smoking}
-              onChange={handleChange}
+            <CustomSelect
+              Name="Smoking"
+              Options={smokingHabits}
+              Value={preferences.Smoking}
+              OnChange={handleChange}
+              Placeholder={"Smoking"}
+              AllowMultiple={false}
             />
           </div>
           <div>
             <label>Drinking:</label>
-            <input
-              type="text"
-              name="Drinking"
-              value={preferences.Drinking}
-              onChange={handleChange}
+            <CustomSelect
+              Name="Drinking"
+              Options={drinkingHabits}
+              Value={preferences.Drinking}
+              OnChange={handleChange}
+              Placeholder={"Drinking"}
+              AllowMultiple={false}
             />
           </div>
           <button type="button" onClick={handleSave}>
