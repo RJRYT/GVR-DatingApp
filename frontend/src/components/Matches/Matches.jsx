@@ -377,11 +377,18 @@ const MatchingPage = () => {
             <form>
               <div>
                 <label>Sort by Age:</label>
-                <select value={sort} onChange={(e) => setSort(e.target.value)}>
-                  <option value="">None</option>
-                  <option value="ageAsc">Ascending</option>
-                  <option value="ageDesc">Descending</option>
-                </select>
+                <CustomSelect
+                  Name="SortAge"
+                  Options={[
+                    { label: "None", value: "" },
+                    { label: "Ascending", value: "ageAsc" },
+                    { label: "Descending", value: "ageDesc" },
+                  ]}
+                  Value={sort}
+                  OnChange={(e) => setSort(e.target.value)}
+                  Placeholder={"Sort by"}
+                  AllowMultiple={false}
+                />
               </div>
               <button type="button" onClick={() => setSortModalOpen(false)}>
                 Apply

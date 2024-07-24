@@ -138,6 +138,7 @@
     height: 100%;
     background-size: cover;
     background-position: center;
+    background-color: rgba(0, 0, 0, 0.09);
 }
 
 .matching-container .match-item .match-overlay {
