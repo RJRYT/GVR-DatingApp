@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../Instance/Axios";
+import { Link } from "react-router-dom";
 import "./Matches.css";
 import Preferences from "./Preferences/Preferences";
 
@@ -169,8 +170,9 @@ const MatchingPage = () => {
       ) : filteredAndSortedMatches.length ? (
         <div className="matches-grid">
           {filteredAndSortedMatches.map((match, key) => (
-            <div
+            <Link
               key={key}
+              to={`/profile/${match.id}`}
               className="match-item"
               title={`Profile of ${match.username}`}
             >
@@ -238,7 +240,7 @@ const MatchingPage = () => {
                   </p>
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       ) : (

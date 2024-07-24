@@ -44,11 +44,12 @@ exports.matchAlgorithm = async (req, res) => {
     if (preferences.Drinking) {
       matchingQuery.drinkingHabits = preferences.Drinking;
     }
-
-    console.log("Matching Query: ", matchingQuery);
-
+    
     // Find users that match the preferences
-    const matches = await User.find(matchingQuery)
+    const matches = await User.find(
+      matchingQuery,
+      "id username age gender location hobbies interests smokingHabits drinkingHabits qualification profilePic shortReel"
+    )
       .limit(limit * 1)
       .skip((page - 1) * limit)
       .exec();

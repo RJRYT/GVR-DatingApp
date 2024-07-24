@@ -91,6 +91,16 @@ const Home = () => {
                   </Col>
                 </Row>
               )}
+              {authState.user.purpose === "shortTermRelationShip" && (
+                <>
+                <hr />
+                <Row>
+                  <Col xs={12}>
+                    <h3 className="h1"><Link className="text-dark" to={"dating"}>Goto Dating Dashboard</Link></h3>
+                  </Col>
+                </Row>
+                </>
+              )}
             </div>
           ) : (
             <p className="text-dark">Loading...</p>

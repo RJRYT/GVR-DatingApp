@@ -12,6 +12,7 @@ import LoginPhone from "./components/Login/LoginPhone";
 import Register from "./components/Register/Register";
 import NotFound from "./components/NotFound/NotFound";
 import Welcome from "./components/Welcome/Welcome";
+import Profile from "./components/Profile/Profile";
 import { AuthProvider } from "./contexts/AuthContext";
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
             <Route path="/home" element={<Home />} />
             <Route path="/home/dating" element={<DashBoard />} />
             <Route path="/welcome" element={<Welcome />} />
+            <Route path="/profile" element={<Navigate to="/profile/@me" />} />
+            <Route path="/profile/:userId" element={<Profile />} />
             <Route path="/" element={<Navigate to="/login" />} />
             <Route path="*" element={<NotFound />} />
           </Route>

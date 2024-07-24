@@ -45,5 +45,11 @@ module.exports = (app) => {
     usersController.CheckRegistrationStatus
   );
 
+  router.get(
+    "/profile/:userId",
+    usersController.authMiddleware,
+    usersController.fetchUserDetails
+  );
+
   app.use("/api/users", router);
 };
