@@ -66,10 +66,12 @@ const MatchingPage = () => {
 
   const handlePreferencesSave = () => {
     setPreferencesModalOpen(false);
+    setCurrentPage(1);
     fetchMatches();
   };
 
   const handlePageChange = (pageNumber) => {
+    window.scroll({top:250, behavior:'smooth'})
     setCurrentPage(pageNumber);
   };
 
@@ -92,41 +94,55 @@ const MatchingPage = () => {
         </div>
       </div>
       {filteredAndSortedMatches.length ? (
-        <div className="matches-list">
+        <div className="matches-grid">
           {filteredAndSortedMatches.map((match, key) => (
             <div
               key={key}
               className="match-item"
               title={`Profile of ${match.username}`}
             >
-              <img
-                src={match.profilePic[0].url}
-                alt={match.username}
-                title={match.username}
-              />
-              <p title={`Name: ${match.username}, Age: ${match.age}`}>
-                {match.username}, {match.age}
-              </p>
-              <p title={`Location: ${match.location}`}>{match.location}</p>
-              <hr />
-              <p>
-                <u>Education:</u>{" "}
-                {match.qualification.map((qual) => qual.label).join(", ")}
-              </p>
-              <p>
-                <u>Hobbies:</u>{" "}
-                {match.hobbies.map((hby) => hby.label).join(", ")}
-              </p>
-              <p>
-                <u>Interests:</u>{" "}
-                {match.interests.map((intr) => intr.label).join(", ")}
-              </p>
-              <p>
-                <u>Drinking:</u> {match.drinkingHabits}
-              </p>
-              <p>
-                <u>Smoking:</u> {match.smokingHabits}
-              </p>
+              <div
+                className="match-bg"
+                style={{ backgroundImage: `url(${match.profilePic[0].url})` }}
+              >
+                <div className="match-overlay">
+                  <h3 title={`Name: ${match.username}, Age: ${match.age}`}>
+                    {match.username}, {match.age}
+                  </h3>
+                  <p title={`Location: ${match.location}`}>{match.location}</p>
+                  <hr />
+                  <p title="Education">
+                    <strong>Education:</strong>{" "}
+                    {match.qualification.map((qual, index) => (
+                      <span key={index} title={`Education: ${qual.label}`} className="badge">
+                        {qual.label}
+                      </span>
+                    ))}
+                  </p>
+                  <p title="Hobbies">
+                    <strong>Hobbies:</strong>{" "}
+                    {match.hobbies.map((hby, index) => (
+                      <span key={index} title={`Hobbies: ${hby.label}`} className="badge">
+                        {hby.label}
+                      </span>
+                    ))}
+                  </p>
+                  <p title="Interests">
+                    <strong>Interests:</strong>{" "}
+                    {match.interests.map((intr, index) => (
+                      <span key={index} title={`Interests: ${intr.label}`} className="badge">
+                        {intr.label}
+                      </span>
+                    ))}
+                  </p>
+                  <p title={`Drinking: ${match.drinkingHabits}`}>
+                    <strong>Drinking:</strong> {match.drinkingHabits}
+                  </p>
+                  <p title={`Smoking: ${match.smokingHabits}`}>
+                    <strong>Smoking:</strong> {match.smokingHabits}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
@@ -143,6 +159,7 @@ const MatchingPage = () => {
             key={number + 1}
             onClick={() => handlePageChange(number + 1)}
             className={currentPage === number + 1 ? "active" : ""}
+            disabled={currentPage === number + 1}
           >
             {number + 1}
           </button>
