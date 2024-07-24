@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "../../../Instance/Axios";
+import { toast } from "react-toastify";
 
 import {
   locations,
@@ -12,17 +13,8 @@ import {
 } from "../../../assets/data/Data";
 import CustomSelect from "../CustomSelect";
 
-const PreferencesModal = ({ isOpen, onClose, onSave }) => {
-  const [preferences, setPreferences] = useState({
-    AgeRange: { min: "", max: "" },
-    Location: "",
-    Interests: [],
-    Hobbies: [],
-    Education: [],
-    Gender: "",
-    Smoking: "",
-    Drinking: "",
-  });
+const PreferencesModal = ({ isOpen, onClose, onSave, userPreferences }) => {
+  const [preferences, setPreferences] = userPreferences;
 
   useEffect(() => {
     const fetchPreferences = async () => {
@@ -52,11 +44,13 @@ const PreferencesModal = ({ isOpen, onClose, onSave }) => {
   const handleSave = async () => {
     try {
       const response = await axios.post("/matches/preferences", preferences);
-      alert(response.data.message);
+      toast.success(response.data.message);
       onSave();
     } catch (err) {
       console.error(err);
-      alert(err.response.data.message || "Somthing broken... ! Try again later");
+      toast.error(
+        err.response.data.message || "Somthing broken... ! Try again later"
+      );
     }
   };
 
@@ -114,13 +108,13 @@ const PreferencesModal = ({ isOpen, onClose, onSave }) => {
             />
           </div>
           <div>
-            <label>Interests:</label>
+            <label>Education:</label>
             <CustomSelect
-              Name="Interests"
-              Options={interests}
-              Value={preferences.Interests}
+              Name="Education"
+              Options={qualifications}
+              Value={preferences.Education}
               OnChange={handleChange}
-              Placeholder={"Interests"}
+              Placeholder={"Education"}
               AllowMultiple={true}
             />
           </div>
@@ -136,24 +130,24 @@ const PreferencesModal = ({ isOpen, onClose, onSave }) => {
             />
           </div>
           <div>
-            <label>Education:</label>
+            <label>Interests:</label>
             <CustomSelect
-              Name="Education"
-              Options={qualifications}
-              Value={preferences.Education}
+              Name="Interests"
+              Options={interests}
+              Value={preferences.Interests}
               OnChange={handleChange}
-              Placeholder={"Education"}
+              Placeholder={"Interests"}
               AllowMultiple={true}
             />
           </div>
           <div>
-            <label>Gender:</label>
+            <label>Drinking:</label>
             <CustomSelect
-              Name="Gender"
-              Options={gender}
-              Value={preferences.Gender}
+              Name="Drinking"
+              Options={drinkingHabits}
+              Value={preferences.Drinking}
               OnChange={handleChange}
-              Placeholder={"Gender"}
+              Placeholder={"Drinking"}
               AllowMultiple={false}
             />
           </div>
@@ -169,13 +163,13 @@ const PreferencesModal = ({ isOpen, onClose, onSave }) => {
             />
           </div>
           <div>
-            <label>Drinking:</label>
+            <label>Gender:</label>
             <CustomSelect
-              Name="Drinking"
-              Options={drinkingHabits}
-              Value={preferences.Drinking}
+              Name="Gender"
+              Options={gender}
+              Value={preferences.Gender}
               OnChange={handleChange}
-              Placeholder={"Drinking"}
+              Placeholder={"Gender"}
               AllowMultiple={false}
             />
           </div>

@@ -58,7 +58,6 @@ exports.interests = [
   { value: 'martial arts', label: 'Martial Arts' },
   { value: 'music', label: 'Music' },
   { value: 'theater', label: 'Theater' },
-  { value: 'travel', label: 'Travel' },
   { value: 'pets', label: 'Pets' },
   { value: 'science fiction', label: 'Science Fiction' },
   { value: 'anime', label: 'Anime' },
