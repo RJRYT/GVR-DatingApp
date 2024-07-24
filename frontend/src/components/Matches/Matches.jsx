@@ -7,14 +7,16 @@ const MatchingPage = () => {
   const [matches, setMatches] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [matchesPerPage] = useState(10); // Matches per page
+  const [matchesPerPage] = useState(12); // Matches per page
   const [isPreferencesModalOpen, setPreferencesModalOpen] = useState(false);
   const [isFilterModalOpen, setFilterModalOpen] = useState(false);
   const [isSortModalOpen, setSortModalOpen] = useState(false);
   const [filter, setFilter] = useState({});
   const [sort, setSort] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const fetchMatches = async () => {
+    setLoading(true);
     try {
       const response = await axios.get("/matches/me", {
         params: { page: currentPage, limit: matchesPerPage },
@@ -23,6 +25,8 @@ const MatchingPage = () => {
       setTotalPages(response.data.totalPages);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -71,7 +75,7 @@ const MatchingPage = () => {
   };
 
   const handlePageChange = (pageNumber) => {
-    window.scroll({top:250, behavior:'smooth'})
+    window.scroll({ top: 250, behavior: "smooth" });
     setCurrentPage(pageNumber);
   };
 
@@ -93,7 +97,23 @@ const MatchingPage = () => {
           <i className="fa fa-sort" onClick={() => setSortModalOpen(true)}></i>
         </div>
       </div>
-      {filteredAndSortedMatches.length ? (
+      {loading ? (
+        <div className="matches-grid">
+          {Array.from({ length: 12 }).map((_, index) => (
+            <div key={index} className="match-item skeleton">
+              <div className="skeleton-bg">
+                <div className="skeleton-overlay">
+                  <div className="skeleton-text skeleton-title"></div>
+                  <div className="skeleton-text skeleton-line"></div>
+                  <div className="skeleton-text skeleton-line"></div>
+                  <div className="skeleton-text skeleton-line"></div>
+                  <div className="skeleton-text skeleton-line"></div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : filteredAndSortedMatches.length ? (
         <div className="matches-grid">
           {filteredAndSortedMatches.map((match, key) => (
             <div
@@ -114,7 +134,11 @@ const MatchingPage = () => {
                   <p title="Education">
                     <strong>Education:</strong>{" "}
                     {match.qualification.map((qual, index) => (
-                      <span key={index} title={`Education: ${qual.label}`} className="badge">
+                      <span
+                        key={index}
+                        title={`Education: ${qual.label}`}
+                        className="badge"
+                      >
                         {qual.label}
                       </span>
                     ))}
@@ -122,7 +146,11 @@ const MatchingPage = () => {
                   <p title="Hobbies">
                     <strong>Hobbies:</strong>{" "}
                     {match.hobbies.map((hby, index) => (
-                      <span key={index} title={`Hobbies: ${hby.label}`} className="badge">
+                      <span
+                        key={index}
+                        title={`Hobbies: ${hby.label}`}
+                        className="badge"
+                      >
                         {hby.label}
                       </span>
                     ))}
@@ -130,7 +158,11 @@ const MatchingPage = () => {
                   <p title="Interests">
                     <strong>Interests:</strong>{" "}
                     {match.interests.map((intr, index) => (
-                      <span key={index} title={`Interests: ${intr.label}`} className="badge">
+                      <span
+                        key={index}
+                        title={`Interests: ${intr.label}`}
+                        className="badge"
+                      >
                         {intr.label}
                       </span>
                     ))}
