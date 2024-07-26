@@ -95,6 +95,7 @@ const Login = () => {
                       <Link
                         className="align-items-center d-flex google justify-content-center"
                         to={`${process.env.REACT_APP_API_URL}/api/auth/google/login`}
+                        target="about:_blank"
                       >
                         <i className="fa fa-google"></i> Sign in With google
                       </Link>

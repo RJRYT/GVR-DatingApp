@@ -14,7 +14,10 @@ const cleanupUnusedFiles = require("./app/helpers/CleanupFiles");
 const app = express();
 
 //Configure CORS
-const allowedOrigins = [process.env.FRONTEND_URL, process.env.PRIVATE_IP || ""];
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  ...(process.env.PRIVATE_IP || ""),
+];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -78,13 +81,15 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/users.routes")(app);
 require("./app/routes/matches.routes")(app);
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+if (process.env.NODE_ENV === "production") {
+  // Serve static files from the React app
+  app.use(express.static(path.join(__dirname, "../frontend/build")));
 
-// The "catchall" handler: for any request that doesn't match one above, send back the React app's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-});
+  // The "catchall" handler: for any request that doesn't match one above, send back the React app's index.html file.
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+  });
+}
 
 //Notfound handling
 app.use(function (req, res) {
@@ -112,8 +117,8 @@ process.on("uncaughtException", (err, origin) => {
 });
 
 // Schedule the cleanup to run daily at midnight
-cron.schedule('0 0 * * *', () => {
-  console.log('[Corn Job]:Corn job triggered...');
+cron.schedule("0 0 * * *", () => {
+  console.log("[Corn Job]:Corn job triggered...");
   cleanupUnusedFiles();
 });
 
