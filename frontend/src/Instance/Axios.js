@@ -2,7 +2,6 @@ import axios from "axios";
 
 const getBaseUrl = ()=>{
   const hostname = window.location.hostname;
-  alert(hostname);
   if(hostname.startsWith('192.168.')){
     return `http://${hostname}:5000/api`;
   }
