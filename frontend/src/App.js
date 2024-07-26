@@ -31,7 +31,6 @@ function App() {
             <Route path="/profile" element={<Navigate to="/profile/@me" />} />
             <Route path="/profile/:userId" element={<Profile />} />
             <Route path="/" element={<Navigate to="/login" />} />
-            <Route path="/api" element={<Navigate to="/api" />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

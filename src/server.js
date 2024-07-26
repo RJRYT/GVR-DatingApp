@@ -16,7 +16,9 @@ const app = express();
 //Configure CORS
 const allowedOrigins = [
   process.env.FRONTEND_URL,
-  ...(process.env.PRIVATE_IP || ""),
+  "http://192.168.21.29:5000",
+  "http://localhost:3000",
+  "http://192.168.21.29:3000",
 ];
 
 const corsOptions = {
