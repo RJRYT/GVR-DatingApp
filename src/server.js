@@ -121,4 +121,8 @@ cron.schedule('0 0 * * *', () => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`[Server]:Server is running on port ${PORT}.`);
+  console.log("++++++++++++++++++++++++++++++++++++++");
+  console.log(`[Server]: Local: ${process.env.FRONTEND_URL}/`);
+  console.log(`[Server]: Private: ${process.env.PRIVATE_IP}/`);
+  console.log("++++++++++++++++++++++++++++++++++++++");
 });
