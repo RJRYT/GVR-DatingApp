@@ -7,19 +7,13 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cron = require("node-cron");
 const morgan = require("morgan");
-const path = require("path");
 
 const cleanupUnusedFiles = require("./app/helpers/CleanupFiles");
 
 const app = express();
 
 //Configure CORS
-const allowedOrigins = [
-  process.env.FRONTEND_URL,
-  "http://192.168.21.29:5000",
-  "http://localhost:3000",
-  "http://192.168.21.29:3000",
-];
+const allowedOrigins = [process.env.FRONTEND_URL, process.env.PRIVATE_IP];
 
 const corsOptions = {
   origin: (origin, callback) => {
@@ -83,16 +77,6 @@ require("./app/routes/auth.routes")(app);
 require("./app/routes/users.routes")(app);
 require("./app/routes/matches.routes")(app);
 
-if (process.env.NODE_ENV === "production") {
-  // Serve static files from the React app
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
-
-  // The "catchall" handler: for any request that doesn't match one above, send back the React app's index.html file.
-  app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-  });
-}
-
 //Notfound handling
 app.use(function (req, res) {
   res.status(404).json({ message: "Resource not found" });
@@ -127,9 +111,7 @@ cron.schedule("0 0 * * *", () => {
 // set port, listen for requests
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`[Server]:Server is running on port ${PORT}.`);
   console.log("++++++++++++++++++++++++++++++++++++++");
-  console.log(`[Server]: Local: ${process.env.FRONTEND_URL}/`);
-  console.log(`[Server]: Private: ${process.env.PRIVATE_IP}/`);
+  console.log(`[Server]:Api server is running on port ${PORT}.`);
   console.log("++++++++++++++++++++++++++++++++++++++");
 });
