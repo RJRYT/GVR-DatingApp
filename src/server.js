@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cron = require("node-cron");
 const morgan = require("morgan");
+const path = require("path");
 
 const cleanupUnusedFiles = require("./app/helpers/CleanupFiles");
 
@@ -67,7 +68,7 @@ db.mongoose
     process.exit();
   });
 
-app.get(["/", "/api"], (req, res) => {
+app.get("/api", (req, res) => {
   res.json({ message: "Welcome to dating application api." });
 });
 
@@ -76,6 +77,14 @@ require("./app/config/passport.config")(passport);
 require("./app/routes/auth.routes")(app);
 require("./app/routes/users.routes")(app);
 require("./app/routes/matches.routes")(app);
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+// The "catchall" handler: for any request that doesn't match one above, send back the React app's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
 
 //Notfound handling
 app.use(function (req, res) {

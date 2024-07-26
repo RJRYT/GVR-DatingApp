@@ -2,10 +2,40 @@
   "name": "gvr-datingapp",
   "version": "1.0.0",
   "description": "GVR dating app MERN Stack",
-  "main": "main.js",
+  "main": "./src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "concurrently \"npm --prefix ./backend start\" \"npm --prefix ./frontend start\""
+    "start": "node .",
+    "dev": "nodemon .",
+    "installclient": "cd frontend && npm install",
+    "build": "cd frontend && npm run build"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.614.0",
+    "@aws-sdk/s3-request-presigner": "^3.614.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.4.5",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.5-lts.1",
+    "multer-s3": "^3.0.1",
+    "node-cron": "^3.0.3",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
+    "path": "^0.12.7",
+    "twilio": "^5.2.2"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "fs": "^0.0.1-security",
+    "nodemon": "^3.1.4"
   },
   "repository": {
     "type": "git",
@@ -16,8 +46,5 @@
   "bugs": {
     "url": "https://github.com/RJRYT/GVR-DatingApp/issues"
   },
-  "homepage": "https://github.com/RJRYT/GVR-DatingApp#readme",
-  "dependencies": {
-    "concurrently": "^8.2.2"
-  }
+  "homepage": "https://github.com/RJRYT/GVR-DatingApp#readme"
 }

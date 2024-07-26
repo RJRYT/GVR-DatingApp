@@ -10,10 +10,10 @@
 
 - Install frontend dependencies:`cd frontend && npm install`
 
-- Install backend dependencies:`cd ../backend && npm install`
+- Install backend dependencies:`cd .. && npm install`
 
-- Finally Start the server: `cd .. && npm start`
+- Finally Start the server: `npm start`
 
 ```md
-Note: Check the `example.env` in both folder(backend & frontend) file for the env variables needed.
+Note: Check the `example.env` file in folder for the env variables needed.
 ```

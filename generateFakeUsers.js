@@ -1,7 +1,7 @@
 const { faker } = require("@faker-js/faker");
 const fs = require("fs");
 const path = require("path");
-const Schema = require("./src/app/models");
+const Schema = require("./backend/src/app/models");
 const User = Schema.user;
 const Preferences = Schema.preferences;
 
@@ -14,7 +14,7 @@ const {
   expertLevel,
   locations,
   gender,
-} = require("../frontend/src/assets/data/Data");
+} = require("./frontend/src/assets/data/Data");
 
 const connectToDatabase = async () => {
   try {
