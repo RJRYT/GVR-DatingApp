@@ -8,7 +8,8 @@
     "start": "node .",
     "dev": "nodemon .",
     "installclient": "cd frontend && npm install",
-    "build": "cd frontend && npm run build"
+    "build": "cd frontend && npm run build",
+    "both": "concurrently \"npm run dev\" \"npm --prefix ./frontend start\""
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.614.0",
@@ -34,6 +35,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
+    "concurrently": "^8.2.2",
     "fs": "^0.0.1-security",
     "nodemon": "^3.1.4"
   },
