@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "../../Instance/Axios";
 import { Link } from "react-router-dom";
 import "./Matches.css";
@@ -43,7 +43,7 @@ const MatchingPage = () => {
   const [sort, setSort] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const fetchMatches = async () => {
+  const fetchMatches = useCallback(async () => {
     setLoading(true);
     try {
       const response = await axios.get("/matches/me", {
@@ -54,12 +54,12 @@ const MatchingPage = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      //setLoading(false);
+      setLoading(false);
     }
-  };
+  }, [currentPage, matchesPerPage]);
   useEffect(() => {
     fetchMatches();
-  }, [currentPage]);
+  }, [fetchMatches]);
 
   const applyFilterAndSort = () => {
     let filteredMatches = [...matches];
