@@ -32,6 +32,7 @@ const MatchingPage = () => {
   const [isPreferencesModalOpen, setPreferencesModalOpen] = useState(false);
   const [isFilterModalOpen, setFilterModalOpen] = useState(false);
   const [isSortModalOpen, setSortModalOpen] = useState(false);
+  const [isProfileModalOpen, setProfileModalOpen] = useState(true);
   const [filter, setFilter] = useState({
     Gender: "",
     Smoking: "",
@@ -42,6 +43,17 @@ const MatchingPage = () => {
   });
   const [sort, setSort] = useState("");
   const [loading, setLoading] = useState(true);
+
+  const fetchPreferences = useCallback(async ()=>{
+    try {
+      const response = await axios.get("/matches/preferences");
+      if (response.data.preferences) {
+        setPreferences(response.data.preferences);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  },[]);
 
   const fetchMatches = useCallback(async () => {
     setLoading(true);
@@ -57,9 +69,11 @@ const MatchingPage = () => {
       setLoading(false);
     }
   }, [currentPage, matchesPerPage]);
+
   useEffect(() => {
     fetchMatches();
-  }, [fetchMatches]);
+    fetchPreferences();
+  }, [fetchMatches, fetchPreferences]);
 
   const applyFilterAndSort = () => {
     let filteredMatches = [...matches];
@@ -266,6 +280,34 @@ const MatchingPage = () => {
           onSave={handlePreferencesSave}
           userPreferences={[preferences, setPreferences]}
         />
+      )}
+      {isProfileModalOpen && (
+        <div className="matches-model modal">
+          <div className="modal-content">
+            <span className="close" onClick={() => setProfileModalOpen(false)}>
+              &times;
+            </span>
+            <h2>Choose profile</h2>
+            <form>
+              <div>
+                <label>Choose Gender:</label>
+                <CustomSelect
+                  Name="Gender"
+                  Options={gender}
+                  Value={preferences.Gender}
+                  OnChange={(e) =>
+                    setPreferences({ ...preferences, Gender: e.target.value })
+                  }
+                  Placeholder={"Gender"}
+                  AllowMultiple={false}
+                />
+              </div>
+              <button type="button" onClick={() => setProfileModalOpen(false)}>
+                Discover matches
+              </button>
+            </form>
+          </div>
+        </div>
       )}
       {isFilterModalOpen && (
         <div className="matches-model modal">

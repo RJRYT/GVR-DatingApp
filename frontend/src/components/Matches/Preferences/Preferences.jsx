@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import axios from "../../../Instance/Axios";
 import { toast } from "react-toastify";
 
@@ -15,23 +15,6 @@ import CustomSelect from "../CustomSelect";
 
 const PreferencesModal = ({ isOpen, onClose, onSave, userPreferences }) => {
   const [preferences, setPreferences] = userPreferences;
-
-  useEffect(() => {
-    const fetchPreferences = async () => {
-      try {
-        const response = await axios.get("/matches/preferences");
-        if (response.data.preferences) {
-          setPreferences(response.data.preferences);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    if (isOpen) {
-      fetchPreferences();
-    }
-  }, [isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
