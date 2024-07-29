@@ -54,7 +54,7 @@ const MatchingPage = () => {
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      //setLoading(false);
     }
   };
   useEffect(() => {
@@ -158,9 +158,6 @@ const MatchingPage = () => {
               <div className="skeleton-bg">
                 <div className="skeleton-overlay">
                   <div className="skeleton-text skeleton-title"></div>
-                  <div className="skeleton-text skeleton-line"></div>
-                  <div className="skeleton-text skeleton-line"></div>
-                  <div className="skeleton-text skeleton-line"></div>
                   <div className="skeleton-text skeleton-line"></div>
                 </div>
               </div>
